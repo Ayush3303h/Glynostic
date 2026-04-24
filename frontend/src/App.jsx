@@ -401,11 +401,7 @@ export default function App() {
               alt="Medical device"
               className="rounded-2xl object-cover h-36 w-full"
             />
-            <img
-              src="/assets/AB6AXuAFu9TObptSv_55JVRSDWrII7aaAJs81xZxMD3E_SRqKz4jLnDVfiMTBJmhbU-ANarD0pZLnK2w1ueVimFeHn6xT6niFx9za1ImhCvpJb7PdLeyTw-1iRCZSdfi5wdrKkh3Jstx0V5K3sckhffGHFdOlH3a2893QGWkM2rSExDdGifqdTiK0A65kY_NSZGVYMGl9qQyo7ZhznaVJLF2ley-n_3WpICh_BMo-MkVQWWM.png"
-              alt="Fitness tracking"
-              className="rounded-2xl object-cover h-28 w-full col-span-2"
-            />
+            
           </div>
         </div>
       </motion.section>
