@@ -532,7 +532,6 @@ export default function App() {
               />
             }
           />
-          <Route path="/report" element={<ReportPage />} />
           <Route
             path="/report"
             element={
