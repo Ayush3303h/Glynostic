@@ -18,9 +18,15 @@
 //   plugins: [react()],
 // })
 
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-export default {
+export default defineConfig({
+  plugins: [react()],
   build: {
-    minify: false
-  }
-}
+    minify: "esbuild",   // 🔥 important
+  },
+  optimizeDeps: {
+    include: ["axios"],  // force proper bundling
+  },
+});
