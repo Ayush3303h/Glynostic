@@ -31,10 +31,9 @@ export default function GlynosticLanding() {
     if (user) {
       if (anchorId === 'assessment' || anchorId === 'program') {
         navigate('/paymentpage499')
-      } if (anchorId === 'nintydayspage') {
+      } else if (anchorId === 'nintydayspage') {
         navigate('/nintydayspage')
-      }
-      else {
+      } else {
         scrollToAnchor(anchorId)
       }
       return
