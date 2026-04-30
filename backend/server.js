@@ -46,6 +46,7 @@ const userSchema = new mongoose.Schema(
         meta: { type: mongoose.Schema.Types.Mixed, default: {} },
       },
     ],
+    assessmentData: { type: mongoose.Schema.Types.Mixed },
   },
   { timestamps: true }
 );
@@ -189,6 +190,27 @@ app.get("/api/auth/me", async (req, res) => {
     res.json(doc);
   } catch {
     res.status(401).json({ error: "Invalid token" });
+  }
+});
+
+app.post("/api/assessment", async (req, res) => {
+  const auth = req.headers.authorization;
+  if (!auth) return res.status(401).json({ error: "No token" });
+  const token = auth.split(" ")[1];
+
+  try {
+    const user = jwt.verify(token, process.env.JWT_SECRET);
+    if (!mongoReady) return res.status(500).json({ error: "Database not connected" });
+
+    await User.findOneAndUpdate(
+      { email: user.email },
+      { $set: { assessmentData: req.body } },
+      { upsert: true }
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Failed to save assessment:", err);
+    res.status(500).json({ error: "Failed to save assessment" });
   }
 });
 

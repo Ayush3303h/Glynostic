@@ -1,4 +1,7 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAssessment } from '../context/AssessmentContext'
+import { useAuth } from '../context/AuthContext'
 
 const logo = 'https://www.figma.com/api/mcp/asset/28ec0a78-b960-4809-9051-9f5aa90c8a80'
 const accountIcon = 'https://www.figma.com/api/mcp/asset/0e62cbe0-c424-41ce-98e0-b829a57b9487'
@@ -29,16 +32,21 @@ const conditions = [
 
 export default function PatientHistoryPage() {
   const fileRef = useRef(null)
-  const [selectedConditions, setSelectedConditions] = useState([])
-  const [otherCondition, setOtherCondition] = useState('')
-  const [diabetesHistory, setDiabetesHistory] = useState('yes')
-  const [heartDiseaseHistory, setHeartDiseaseHistory] = useState('no')
-  const [relation, setRelation] = useState('')
-  const [exercise, setExercise] = useState('3-4 times / week')
-  const [smoke, setSmoke] = useState(false)
-  const [alcohol, setAlcohol] = useState(true)
+  const navigate = useNavigate()
+  const { assessmentData, updateAssessmentData } = useAssessment()
+  const { user, logout } = useAuth()
+  const historyData = assessmentData.patientHistory || {}
+
+  const [selectedConditions, setSelectedConditions] = useState(historyData.selectedConditions || [])
+  const [otherCondition, setOtherCondition] = useState(historyData.otherCondition || '')
+  const [diabetesHistory, setDiabetesHistory] = useState(historyData.diabetesHistory || 'yes')
+  const [heartDiseaseHistory, setHeartDiseaseHistory] = useState(historyData.heartDiseaseHistory || 'no')
+  const [relation, setRelation] = useState(historyData.relation || '')
+  const [exercise, setExercise] = useState(historyData.exercise || '3-4 times / week')
+  const [smoke, setSmoke] = useState(historyData.smoke || false)
+  const [alcohol, setAlcohol] = useState(historyData.alcohol || true)
   const [files, setFiles] = useState([])
-  const [medications, setMedications] = useState([
+  const [medications, setMedications] = useState(historyData.medications || [
     { id: 1, name: 'Metformin', dosage: '500mg', frequency: 'Twice daily' },
     { id: 2, name: 'Vitamin D3', dosage: '2000 IU', frequency: 'Once daily' },
   ])
@@ -71,16 +79,42 @@ export default function PatientHistoryPage() {
     setFiles(selected)
   }
 
+  const handleContinue = () => {
+    updateAssessmentData('patientHistory', {
+      selectedConditions,
+      otherCondition,
+      diabetesHistory,
+      heartDiseaseHistory,
+      relation,
+      exercise,
+      smoke,
+      alcohol,
+      medications
+    })
+    navigate('/patient-lifestyle')
+  }
+
   return (
     <div className="min-h-screen bg-[#f7fafc] font-['Inter',sans-serif] text-[#151c27]">
       <header className="border-b border-[#f1f5f9] bg-[rgba(255,255,255,0.8)] px-4 shadow-[0px_4px_10px_rgba(0,82,204,0.05)] backdrop-blur-[6px] sm:px-8 lg:px-[86px]">
         <div className="mx-auto flex h-[68px] w-full max-w-[1280px] items-center justify-between">
           <img src={logo} alt="Glynostic" className="h-8 w-[133px] object-contain object-left" />
           <div className="flex items-center gap-4">
-            <img src={accountIcon} alt="" className="hidden size-5 sm:block" />
-            <button className="rounded-full bg-[#003d9b] px-4 py-2 text-xs font-semibold text-white sm:px-6 sm:text-sm">
-              Get Started
-            </button>
+            {user ? (
+              <>
+                <img src={user.picture} alt="" className="size-8 rounded-full object-cover" />
+                <button onClick={logout} className="rounded-full bg-[#003d9b] px-4 py-2 text-xs font-semibold text-white sm:px-6 sm:text-sm">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <img src={accountIcon} alt="" className="hidden size-5 sm:block" />
+                <button className="rounded-full bg-[#003d9b] px-4 py-2 text-xs font-semibold text-white sm:px-6 sm:text-sm">
+                  Get Started
+                </button>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -339,7 +373,7 @@ export default function PatientHistoryPage() {
           </div>
 
           <div className="mt-8 flex justify-center lg:justify-end">
-            <button className="flex items-center gap-3 rounded-full bg-[#003d9b] px-10 py-4 text-lg text-white shadow-[0px_10px_15px_-3px_rgba(0,83,68,0.2),0px_4px_6px_-4px_rgba(0,83,68,0.2)]">
+            <button onClick={handleContinue} className="flex items-center gap-3 rounded-full bg-[#003d9b] px-10 py-4 text-lg text-white shadow-[0px_10px_15px_-3px_rgba(0,83,68,0.2),0px_4px_6px_-4px_rgba(0,83,68,0.2)]">
               Continue
               <img src={continueArrow} alt="" className="size-4" />
             </button>

@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAssessment } from '../context/AssessmentContext'
+import { useAuth } from '../context/AuthContext'
 
 const logo = 'https://www.figma.com/api/mcp/asset/18ff29d9-6ac5-4966-a428-4f1b9e067772'
 const accountIcon = 'https://www.figma.com/api/mcp/asset/a368c798-2fbb-4508-b447-9bb81fdf13e1'
@@ -20,16 +23,42 @@ const footerB = 'https://www.figma.com/api/mcp/asset/100090cc-e01f-4246-b12a-4af
 const footerC = 'https://www.figma.com/api/mcp/asset/c7a4dd8e-c78f-49cc-938f-78793b677a72'
 
 export default function PatientInfoPage() {
-  const [formData, setFormData] = useState({
+  const { assessmentData, updateAssessmentData } = useAssessment()
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const [formData, setFormData] = useState(assessmentData.patientInfo || {
     fullName: '',
     mobile: '',
     email: '',
     dob: '',
   })
+  
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (user && !formData.email && !formData.fullName) {
+      setFormData(prev => ({
+        ...prev,
+        fullName: user.name || prev.fullName,
+        email: user.email || prev.email
+      }))
+    }
+  }, [user])
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    if (error) setError('')
+  }
+
+  const handleContinue = () => {
+    if (!formData.fullName || !formData.mobile || !formData.email || !formData.dob) {
+      setError('All fields are mandatory. Please fill all the details.')
+      return
+    }
+    updateAssessmentData('patientInfo', formData)
+    navigate('/patient-history')
   }
 
   return (
@@ -38,10 +67,21 @@ export default function PatientInfoPage() {
         <div className="mx-auto flex h-[68px] w-full max-w-[1280px] items-center justify-between">
           <img src={logo} alt="Glynostic" className="h-8 w-[133px] object-contain object-left" />
           <div className="flex items-center gap-4">
-            <img src={accountIcon} alt="" className="hidden size-5 sm:block" />
-            <button className="rounded-full bg-[#003d9b] px-4 py-2 text-xs font-semibold text-white sm:px-6 sm:text-sm">
-              Get Started
-            </button>
+            {user ? (
+              <>
+                <img src={user.picture} alt="" className="size-8 rounded-full object-cover" />
+                <button onClick={logout} className="rounded-full bg-[#003d9b] px-4 py-2 text-xs font-semibold text-white sm:px-6 sm:text-sm">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <img src={accountIcon} alt="" className="hidden size-5 sm:block" />
+                <button className="rounded-full bg-[#003d9b] px-4 py-2 text-xs font-semibold text-white sm:px-6 sm:text-sm">
+                  Get Started
+                </button>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -130,8 +170,9 @@ export default function PatientInfoPage() {
               ))}
             </div>
 
+            {error && <p className="mt-4 text-sm text-red-500 font-semibold">{error}</p>}
             <div className="mt-8 flex justify-center md:justify-end">
-              <button className="flex items-center rounded-full bg-[#003d9b] px-8 py-4 text-lg font-semibold text-white shadow-[0px_10px_15px_-3px_rgba(0,83,68,0.2),0px_4px_6px_-4px_rgba(0,83,68,0.2)]">
+              <button onClick={handleContinue} className="flex items-center rounded-full bg-[#003d9b] px-8 py-4 text-lg font-semibold text-white shadow-[0px_10px_15px_-3px_rgba(0,83,68,0.2),0px_4px_6px_-4px_rgba(0,83,68,0.2)]">
                 Continue
                 <img src={continueArrow} alt="" className="ml-3 size-4" />
               </button>

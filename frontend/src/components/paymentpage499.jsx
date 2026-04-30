@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { ASSETS } from '../../public/assets/figmaAssets'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
@@ -46,62 +45,9 @@ const postPaymentItems = [
   'Receive your clinical PDF report via Email & WhatsApp.',
 ]
 
-const loadRazorpayScript = () => {
-  return new Promise((resolve) => {
-    const script = document.createElement('script')
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
-    script.onload = () => resolve(true)
-    script.onerror = () => resolve(false)
-    document.body.appendChild(script)
-  })
-}
-
 export default function PaymentPage499() {
   const { user, logout, loading } = useAuth()
   const navigate = useNavigate()
-  const [isProcessing, setIsProcessing] = useState(false)
-
-  const handlePayment = async () => {
-    setIsProcessing(true)
-    const res = await loadRazorpayScript()
-
-    if (!res) {
-      alert('Razorpay SDK failed to load. Are you offline?')
-      setIsProcessing(false)
-      return
-    }
-
-    try {
-      const response = await axios.post('http://localhost:5000/api/payment/create-order')
-      const { id, amount, currency } = response.data
-
-      const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_dummy_key',
-        amount: amount,
-        currency: currency,
-        name: 'Glynostic',
-        description: 'Metabolic Risk Assessment',
-        order_id: id,
-        handler: function (response) {
-          alert('Payment Successful! Payment ID: ' + response.razorpay_payment_id)
-        },
-        prefill: {
-          name: user?.name || 'Customer Name',
-          email: user?.email || 'customer@example.com',
-        },
-        theme: {
-          color: '#003d9b',
-        },
-      }
-
-      const paymentObject = new window.Razorpay(options)
-      paymentObject.open()
-    } catch (err) {
-      alert('Could not start payment. Please try again.')
-    } finally {
-      setIsProcessing(false)
-    }
-  }
 
   useEffect(() => {
     if (!loading && !user) {
@@ -242,12 +188,89 @@ export default function PaymentPage499() {
               </div>
 
 
+              <div className="py-2">
+                <div className="mt-6 rounded-xl border-2 border-[#003d9b] p-[18px]">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <img src={imgUpiIcon} alt="" className="size-[18px]" />
+                      <span className="text-base font-semibold leading-6 text-[#151c27]">UPI / QR Code</span>
+                    </div>
+                    <span className="rounded bg-[#003d9b] px-2 py-[2px] text-[10px] font-semibold uppercase leading-[15px] text-white">
+                      RECOMMENDED
+                    </span>
+                  </div>
+
+                  <div className="mt-4 flex h-[280px] flex-col items-center justify-end rounded-lg border border-[#003d9b] bg-white pb-[17px] sm:h-[352px]">
+                    <div className="mb-2 h-[128px] w-[128px] bg-white" />
+                    <p className="text-xs font-medium leading-4 text-[#57605f]">Scan with any UPI App</p>
+                  </div>
+
+                  <div className="mt-4 flex items-center justify-between rounded-lg border border-[rgba(190,201,196,0.3)] px-[13px] py-[13px]">
+                    <span className="text-sm font-medium leading-5 text-[#151c27]">glynostic@upi</span>
+                    <button className="text-xs font-semibold uppercase leading-4 text-[#003d9b]">COPY</button>
+                  </div>
+                </div>
+
+                <div className="mt-6 rounded-xl border border-[rgba(190,201,196,0.3)] p-[17px]">
+                  <div className="flex items-center gap-2">
+                    <img src={imgCardIcon} alt="" className="h-4 w-5" />
+                    <span className="text-base font-semibold leading-6 text-[#151c27]">Card Payment</span>
+                  </div>
+
+                  <div className="mt-6 space-y-4">
+                    <label className="block">
+                      <span className="text-[10px] font-semibold uppercase leading-[15px] text-[#57605f]">
+                        CARD NUMBER
+                      </span>
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="XXXX XXXX XXXX XXXX"
+                        className="mt-1 w-full rounded-lg border border-[#bec9c4] px-[17px] py-[15px] text-base text-[#6b7280]"
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="text-[10px] font-semibold uppercase leading-[15px] text-[#57605f]">
+                        NAME ON CARD
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="FULL NAME"
+                        className="mt-1 w-full rounded-lg border border-[#bec9c4] px-[17px] py-[15px] text-base text-[#6b7280]"
+                      />
+                    </label>
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <label className="block">
+                        <span className="text-[10px] font-semibold uppercase leading-[15px] text-[#57605f]">
+                          EXPIRY DATE
+                        </span>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          placeholder="MM/YY"
+                          className="mt-1 w-full rounded-lg border border-[#bec9c4] px-[17px] py-[15px] text-base text-[#6b7280]"
+                        />
+                      </label>
+                      <label className="block">
+                        <span className="text-[10px] font-semibold uppercase leading-[15px] text-[#57605f]">
+                          CVV
+                        </span>
+                        <input
+                          type="password"
+                          inputMode="numeric"
+                          placeholder="***"
+                          className="mt-1 w-full rounded-lg border border-[#bec9c4] px-[17px] py-[15px] text-base text-[#6b7280]"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <button 
-                onClick={handlePayment}
-                disabled={isProcessing}
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-[#003d9b] py-4 text-base font-semibold leading-6 text-white shadow-[0px_10px_15px_-3px_rgba(0,83,68,0.2),0px_4px_6px_-4px_rgba(0,83,68,0.2)] disabled:opacity-70 disabled:cursor-not-allowed"
-              >
-                {isProcessing ? 'Starting Payment...' : 'Pay ₹499 Securely'}
+                onClick={() => navigate('/patient-info')}
+                className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-[#003d9b] py-4 text-base font-semibold leading-6 text-white shadow-[0px_10px_15px_-3px_rgba(0,83,68,0.2),0px_4px_6px_-4px_rgba(0,83,68,0.2)]">
+                Pay ₹499 Securely
                 <img src={imgArrowIcon} alt="" className="size-[13px]" />
               </button>
 

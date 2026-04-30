@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 /** Figma MCP — node 253:4567 (refresh via get_design_context if URLs expire) */
 
 const decorativeIcon = 'https://www.figma.com/api/mcp/asset/57ff94e2-84ed-4e06-a4b7-95045213fa53'
@@ -32,12 +34,12 @@ export default function DonePage() {
 
         {/* 253:4562 — pt 32 before button */}
         <div className="pt-8">
-          <a
-            href="/"
+          <Link
+            to="/"
             className="inline-flex rounded-full border border-solid border-[rgba(255,255,255,0.2)] bg-[rgba(255,255,255,0.1)] px-[33px] py-[13px] text-xs font-semibold uppercase leading-4 tracking-[0.6px] text-white transition-colors hover:bg-[rgba(255,255,255,0.15)]"
           >
             Return to dashboard
-          </a>
+          </Link>
         </div>
       </div>
     </div>

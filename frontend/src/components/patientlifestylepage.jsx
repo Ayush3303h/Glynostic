@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAssessment } from '../context/AssessmentContext'
+import { useAuth } from '../context/AuthContext'
 
 const logo = 'https://www.figma.com/api/mcp/asset/abe52546-340a-43f5-8373-f98c8bf06669'
 const accountIcon = 'https://www.figma.com/api/mcp/asset/2c68d5dd-5f79-4fb2-9124-0c76561d3a94'
@@ -36,14 +39,19 @@ function IconWrap({ src, className, alt = '' }) {
 }
 
 export default function PatientLifestylePage() {
-  const [dietNotes, setDietNotes] = useState('')
-  const [exerciseFreq, setExerciseFreq] = useState('3-4 times/week')
-  const [activities, setActivities] = useState(() => new Set(['cardio', 'yoga']))
-  const [sleepHours, setSleepHours] = useState('7.5')
-  const [bedtime, setBedtime] = useState('22:30')
-  const [wakeTime, setWakeTime] = useState('06:30')
-  const [stressLevel, setStressLevel] = useState(3)
-  const [workBalance, setWorkBalance] = useState('')
+  const navigate = useNavigate()
+  const { assessmentData, updateAssessmentData } = useAssessment()
+  const { user, logout } = useAuth()
+  const lifestyleData = assessmentData.patientLifestyle || {}
+
+  const [dietNotes, setDietNotes] = useState(lifestyleData.dietNotes || '')
+  const [exerciseFreq, setExerciseFreq] = useState(lifestyleData.exerciseFreq || '3-4 times/week')
+  const [activities, setActivities] = useState(() => new Set(lifestyleData.activities || ['cardio', 'yoga']))
+  const [sleepHours, setSleepHours] = useState(lifestyleData.sleepHours || '7.5')
+  const [bedtime, setBedtime] = useState(lifestyleData.bedtime || '22:30')
+  const [wakeTime, setWakeTime] = useState(lifestyleData.wakeTime || '06:30')
+  const [stressLevel, setStressLevel] = useState(lifestyleData.stressLevel || 3)
+  const [workBalance, setWorkBalance] = useState(lifestyleData.workBalance || '')
 
   const toggleActivity = (id) => {
     setActivities((prev) => {
@@ -63,6 +71,20 @@ export default function PatientLifestylePage() {
     return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
   }
 
+  const handleContinue = () => {
+    updateAssessmentData('patientLifestyle', {
+      dietNotes,
+      exerciseFreq,
+      activities: Array.from(activities),
+      sleepHours,
+      bedtime,
+      wakeTime,
+      stressLevel,
+      workBalance
+    })
+    navigate('/patient-biometrics')
+  }
+
   return (
     <div className="min-h-screen bg-[#f7fafc] font-['Inter',sans-serif] text-[#151c27]">
       <header className="border-b border-[#f1f5f9] bg-[rgba(255,255,255,0.8)] px-4 shadow-[0px_4px_10px_rgba(0,82,204,0.05)] backdrop-blur-[6px] sm:px-8 lg:px-[86px]">
@@ -73,13 +95,21 @@ export default function PatientLifestylePage() {
             className="h-8 w-[133px] shrink-0 object-contain object-left"
           />
           <div className="flex items-center gap-4">
-            <IconWrap src={accountIcon} className="hidden size-5 sm:block" />
-            <button
-              type="button"
-              className="rounded-full bg-[#003d9b] px-6 py-2 text-sm font-semibold leading-5 text-white"
-            >
-              Get Started
-            </button>
+            {user ? (
+              <>
+                <img src={user.picture} alt="" className="size-8 rounded-full object-cover" />
+                <button onClick={logout} className="rounded-full bg-[#003d9b] px-4 py-2 text-xs font-semibold text-white sm:px-6 sm:text-sm">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <IconWrap src={accountIcon} className="hidden size-5 sm:block" />
+                <button className="rounded-full bg-[#003d9b] px-4 py-2 text-xs font-semibold text-white sm:px-6 sm:text-sm">
+                  Get Started
+                </button>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -270,6 +300,7 @@ export default function PatientLifestylePage() {
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <button
               type="button"
+              onClick={() => navigate(-1)}
               className="flex items-center gap-2 px-6 py-3 text-base font-semibold text-[#3e4945]"
             >
               <IconWrap src={backArrow} className="size-4" />
@@ -277,6 +308,7 @@ export default function PatientLifestylePage() {
             </button>
             <button
               type="button"
+              onClick={handleContinue}
               className="flex items-center gap-3 self-start rounded-full bg-[#003D9B] px-10 py-4 text-base text-white shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1),0px_8px_10px_-6px_rgba(0,0,0,0.1)] sm:self-auto"
             >
               Continue

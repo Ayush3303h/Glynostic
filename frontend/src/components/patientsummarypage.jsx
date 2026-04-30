@@ -1,4 +1,7 @@
-/** Figma MCP — node 253:2175 (refresh via get_design_context if URLs expire) */
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAssessment } from '../context/AssessmentContext'
+import { useAuth } from '../context/AuthContext'
 
 const logo = 'https://www.figma.com/api/mcp/asset/1c6213eb-a0bd-4d3e-b074-11129c54703f'
 const accountIcon = 'https://www.figma.com/api/mcp/asset/0baa08e4-7375-4104-948f-3162e9bbd12e'
@@ -27,6 +30,32 @@ function IconWrap({ src, className, alt = '' }) {
 }
 
 export default function PatientSummaryPage() {
+  const navigate = useNavigate()
+  const { assessmentData } = useAssessment()
+  const { user, logout } = useAuth()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleComplete = async () => {
+    setIsSubmitting(true)
+    try {
+      const response = await fetch('http://localhost:5000/api/assessment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(assessmentData)
+      })
+      if (!response.ok) throw new Error('Failed to save')
+      navigate('/done')
+    } catch (err) {
+      console.error(err)
+      alert("Failed to save assessment.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[#f7fafc] font-['Inter',sans-serif] text-[#151c27] antialiased">
       <header className="border-b border-solid border-[#f1f5f9] bg-[rgba(255,255,255,0.8)] shadow-[0px_4px_10px_rgba(0,82,204,0.05)] backdrop-blur-[6px]">
@@ -37,13 +66,24 @@ export default function PatientSummaryPage() {
             className="h-8 w-[133px] shrink-0 object-contain object-left"
           />
           <div className="flex items-center gap-4">
-            <IconWrap src={accountIcon} className="size-5" />
-            <button
-              type="button"
-              className="rounded-full bg-[#003d9b] px-6 py-2 text-center text-sm font-semibold leading-5 text-white"
-            >
-              Get Started
-            </button>
+            {user ? (
+              <>
+                <img src={user.picture} alt="" className="size-8 rounded-full object-cover" />
+                <button onClick={logout} className="rounded-full bg-[#003d9b] px-4 py-2 text-xs font-semibold text-white sm:px-6 sm:text-sm">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <IconWrap src={accountIcon} className="size-5" />
+                <button
+                  type="button"
+                  className="rounded-full bg-[#003d9b] px-6 py-2 text-center text-sm font-semibold leading-5 text-white"
+                >
+                  Get Started
+                </button>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -125,10 +165,12 @@ export default function PatientSummaryPage() {
 
                 <button
                   type="button"
-                  className="relative rounded-full bg-[#003d9b] px-12 py-4 shadow-[0px_10px_15px_-3px_rgba(0,83,68,0.2),0px_4px_6px_-4px_rgba(0,83,68,0.2)]"
+                  disabled={isSubmitting}
+                  onClick={handleComplete}
+                  className={`relative rounded-full bg-[#003d9b] px-12 py-4 shadow-[0px_10px_15px_-3px_rgba(0,83,68,0.2),0px_4px_6px_-4px_rgba(0,83,68,0.2)] ${isSubmitting ? 'opacity-70' : ''}`}
                 >
                   <span className="text-center text-lg font-semibold leading-7 text-white">
-                    Complete Assessment
+                    {isSubmitting ? 'Saving...' : 'Complete Assessment'}
                   </span>
                 </button>
 

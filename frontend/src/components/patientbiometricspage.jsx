@@ -1,4 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAssessment } from '../context/AssessmentContext'
+import { useAuth } from '../context/AuthContext'
 
 /** Figma MCP — refresh via get_design_context if URLs expire */
 const logo = 'https://www.figma.com/api/mcp/asset/33b53192-99d5-4b16-9d68-0a04a8f3482f'
@@ -61,8 +64,13 @@ function bmiGaugePercent(bmi) {
 }
 
 export default function PatientBiometricsPage() {
-  const [weight, setWeight] = useState('')
-  const [waist, setWaist] = useState('')
+  const navigate = useNavigate()
+  const { assessmentData, updateAssessmentData } = useAssessment()
+  const { user, logout } = useAuth()
+  const bioData = assessmentData.patientBiometrics || {}
+
+  const [weight, setWeight] = useState(bioData.weight || '')
+  const [waist, setWaist] = useState(bioData.waist || '')
 
   const bmi = useMemo(() => {
     const w = parseFloat(String(weight).replace(',', '.'))
@@ -75,6 +83,11 @@ export default function PatientBiometricsPage() {
   const gaugePercent = useMemo(() => bmiGaugePercent(bmi), [bmi])
   const category = useMemo(() => bmiCategoryLabel(bmi), [bmi])
 
+  const handleContinue = () => {
+    updateAssessmentData('patientBiometrics', { weight, waist })
+    navigate('/patient-summary')
+  }
+
   return (
     <div className="min-h-screen bg-[#f7fafc] font-['Inter',sans-serif] text-[#151c27] antialiased">
       <header className="border-b border-solid border-[#f1f5f9] bg-[rgba(255,255,255,0.8)] shadow-[0px_4px_10px_rgba(0,82,204,0.05)] backdrop-blur-[6px]">
@@ -85,13 +98,24 @@ export default function PatientBiometricsPage() {
             className="h-8 w-[133px] shrink-0 object-contain object-left"
           />
           <div className="flex items-center gap-4">
-            <IconWrap src={accountIcon} className="size-5" />
-            <button
-              type="button"
-              className="rounded-full bg-[#003d9b] px-6 py-2 text-center text-sm font-semibold leading-5 text-white"
-            >
-              Get Started
-            </button>
+            {user ? (
+              <>
+                <img src={user.picture} alt="" className="size-8 rounded-full object-cover" />
+                <button onClick={logout} className="rounded-full bg-[#003d9b] px-4 py-2 text-xs font-semibold text-white sm:px-6 sm:text-sm">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <IconWrap src={accountIcon} className="size-5" />
+                <button
+                  type="button"
+                  className="rounded-full bg-[#003d9b] px-6 py-2 text-center text-sm font-semibold leading-5 text-white"
+                >
+                  Get Started
+                </button>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -251,12 +275,14 @@ export default function PatientBiometricsPage() {
               <div className="flex flex-col gap-4 sm:flex-row sm:gap-4">
                 <button
                   type="button"
+                  onClick={() => navigate(-1)}
                   className="flex h-14 w-full shrink-0 items-center justify-center rounded-full border border-solid border-[#003d9b] px-[33px] text-base font-semibold leading-6 text-[#003d9b] sm:w-[164px]"
                 >
-                  Save Progress
+                  Back
                 </button>
                 <button
                   type="button"
+                  onClick={handleContinue}
                   className="relative flex h-14 w-full shrink-0 items-center justify-center gap-2 rounded-full bg-[#003d9b] px-12 text-base font-semibold leading-6 text-white shadow-[0px_10px_15px_-3px_rgba(0,83,68,0.2),0px_4px_6px_-4px_rgba(0,83,68,0.2)] sm:w-auto sm:min-w-[174px]"
                 >
                   Continue
