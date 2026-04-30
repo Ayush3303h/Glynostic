@@ -26,13 +26,12 @@ export default function App() {
           <Route path="/" element={<GlynosticLanding />} />
           <Route path="/nintydayspage" element={<Nintydayspage />} />
           <Route path="/paymentpage499" element={<PaymentPage499 />} />
-          <Route path="/patient-info" element={<ProtectedRoute><PatientInfoPage /></ProtectedRoute>} />
-          <Route path="/patient-history" element={<ProtectedRoute><PatientHistoryPage /></ProtectedRoute>} />
-          <Route path="/patient-lifestyle" element={<ProtectedRoute><PatientLifestylePage /></ProtectedRoute>} />
-          <Route path="/patient-biometrics" element={<ProtectedRoute><PatientBiometricsPage /></ProtectedRoute>} />
-          <Route path="/patient-summary" element={<ProtectedRoute><PatientSummaryPage /></ProtectedRoute>} />
-          <Route path="/done" element={<ProtectedRoute><DonePage /></ProtectedRoute>} />
-          <Route path="/doctor/login" element={<DoctorLogin />} />
+          <Route path="/patient-info" element={<PatientInfoPage />} />
+          <Route path="/patient-history" element={<PatientHistoryPage />} />
+          <Route path="/patient-lifestyle" element={<PatientLifestylePage />} />
+          <Route path="/patient-biometrics" element={<PatientBiometricsPage />} />
+          <Route path="/patient-summary" element={<PatientSummaryPage />} />
+          <Route path="/done" element={<DonePage />} />
           <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
         </Routes>
       </AssessmentProvider>

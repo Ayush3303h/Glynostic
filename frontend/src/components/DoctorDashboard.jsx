@@ -21,11 +21,6 @@ export default function DoctorDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('doctorToken');
-    if (!token) {
-      navigate('/doctor/login');
-      return;
-    }
     fetchPatients();
   }, []);
 

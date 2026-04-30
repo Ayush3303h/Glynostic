@@ -198,16 +198,12 @@ app.get("/api/auth/me", async (req, res) => {
 });
 
 app.post("/api/assessment", async (req, res) => {
-  const auth = req.headers.authorization;
-  if (!auth) return res.status(401).json({ error: "No token" });
-  const token = auth.split(" ")[1];
+  if (!mongoReady) return res.status(500).json({ error: "Database not connected" });
 
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET);
-    if (!mongoReady) return res.status(500).json({ error: "Database not connected" });
-
+    const email = req.body.patientInfo?.email || "anonymous@example.com";
     await User.findOneAndUpdate(
-      { email: user.email },
+      { email: email },
       { $set: { assessmentData: req.body } },
       { upsert: true }
     );
