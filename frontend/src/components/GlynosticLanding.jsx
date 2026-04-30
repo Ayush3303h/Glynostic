@@ -31,7 +31,10 @@ export default function GlynosticLanding() {
     if (user) {
       if (anchorId === 'assessment' || anchorId === 'program') {
         navigate('/paymentpage499')
-      } else {
+      } if (anchorId === 'nintydayspage') {
+        navigate('/nintydayspage')
+      }
+      else {
         scrollToAnchor(anchorId)
       }
       return
@@ -297,8 +300,8 @@ export default function GlynosticLanding() {
                 </ul>
                 <a
                   className="gl-btn-gl gl-btn-gl--fill-navy lg-block"
-                  href="#program"
-                  onClick={(e) => handleCtaClick(e, 'program')}
+                  href="nintydayspage"
+                  onClick={(e) => handleCtaClick(e, 'nintydayspage')}
                 >
                   <span>Join Program</span>
                   <strong>₹4999</strong>
@@ -423,7 +426,7 @@ export default function GlynosticLanding() {
               </div>
               <aside className="gl-report-gl__quote">
                 <div className="gl-report-gl__stars" aria-hidden>
-                      {[...Array(5)].map((_, idx) => (
+                  {[...Array(5)].map((_, idx) => (
                     <Img key={`star-${idx}`} src={ASSETS.starGlyph} alt="" width={12} height={11} />
                   ))}
                 </div>

@@ -27,9 +27,6 @@ export default defineConfig({
     host: "127.0.0.1",
     port: 5174,
     strictPort: true,
-    headers: {
-      "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
-    },
   },
   build: {
     minify: "esbuild",   // 🔥 important

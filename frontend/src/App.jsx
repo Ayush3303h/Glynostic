@@ -13,6 +13,9 @@ import PatientLifestylePage from "./components/patientlifestylepage"
 import PatientBiometricsPage from "./components/patientbiometricspage"
 import PatientSummaryPage from "./components/patientsummarypage"
 import DonePage from "./components/donepage"
+import DoctorLogin from "./components/DoctorLogin"
+import DoctorDashboard from "./components/DoctorDashboard"
+import Nintydayspage from "./components/nintydayspage"
 
 export default function App() {
 
@@ -21,6 +24,7 @@ export default function App() {
       <AssessmentProvider>
         <Routes>
           <Route path="/" element={<GlynosticLanding />} />
+          <Route path="/nintydayspage" element={<Nintydayspage />} />
           <Route path="/paymentpage499" element={<PaymentPage499 />} />
           <Route path="/patient-info" element={<ProtectedRoute><PatientInfoPage /></ProtectedRoute>} />
           <Route path="/patient-history" element={<ProtectedRoute><PatientHistoryPage /></ProtectedRoute>} />
@@ -28,6 +32,8 @@ export default function App() {
           <Route path="/patient-biometrics" element={<ProtectedRoute><PatientBiometricsPage /></ProtectedRoute>} />
           <Route path="/patient-summary" element={<ProtectedRoute><PatientSummaryPage /></ProtectedRoute>} />
           <Route path="/done" element={<ProtectedRoute><DonePage /></ProtectedRoute>} />
+          <Route path="/doctor/login" element={<DoctorLogin />} />
+          <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
         </Routes>
       </AssessmentProvider>
     </Router>

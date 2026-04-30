@@ -13,6 +13,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.get("/", (req, res) => {
+  res.send("Glynostic Backend is running.");
+});
+
 const googleClientIds = (
   process.env.GOOGLE_CLIENT_IDS ||
   process.env.GOOGLE_CLIENT_ID ||
@@ -233,6 +237,45 @@ app.post("/api/payment/create-order", async (req, res) => {
   } catch (error) {
     console.error("Error creating Razorpay order:", error);
     res.status(500).json({ error: "Could not create payment order" });
+  }
+});
+
+// DOCTOR ENDPOINTS
+app.post("/api/doctor/login", (req, res) => {
+  const { email, password } = req.body;
+  if (email === "doctor@gmail.com" && password === "glynostic1234") {
+    res.json({ token: "fake-doctor-token", success: true });
+  } else {
+    res.status(401).json({ error: "Invalid credentials" });
+  }
+});
+
+app.get("/api/doctor/patients", async (req, res) => {
+  if (!mongoReady) return res.status(500).json({ error: "Database not connected" });
+  // Find users who have assessmentData
+  try {
+    const users = await User.find({ assessmentData: { $exists: true, $ne: null } })
+      .select("name email picture assessmentData")
+      .sort({ updatedAt: -1 })
+      .lean();
+    res.json(users);
+  } catch (err) {
+    console.error("Failed to fetch patients:", err);
+    res.status(500).json({ error: "Failed to fetch patients" });
+  }
+});
+
+app.post("/api/doctor/patients/:id/report", async (req, res) => {
+  if (!mongoReady) return res.status(500).json({ error: "Database not connected" });
+  const { done } = req.body;
+  try {
+    await User.findByIdAndUpdate(req.params.id, {
+      $set: { "assessmentData.reportDone": done }
+    });
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Failed to update report status:", err);
+    res.status(500).json({ error: "Failed to update report status" });
   }
 });
 
