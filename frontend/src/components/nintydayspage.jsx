@@ -187,7 +187,7 @@ export default function NintydaysPage() {
           <div className="relative w-full max-w-[474px] shrink-0 lg:w-[473.61px]">
             <div className="pointer-events-none absolute inset-0 rounded-full bg-[#9df3dc] opacity-30 blur-[40px]" aria-hidden />
             <div className="relative mx-auto aspect-square w-full max-w-[360px] overflow-hidden rounded-[32px] border-4 border-white shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] sm:max-w-[473.61px]">
-              <img alt="" src="../../public/assets/Unted-1.jpg" className="h-full w-full object-cover" />
+              <img alt="" src="/assets/Unted-1.jpg" className="h-full w-full object-cover" />
             </div>
           </div>
         </section>
