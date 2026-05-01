@@ -37,7 +37,7 @@ const storage = multer.diskStorage({
     cb(null, uniqueSuffix + "-" + file.originalname.replace(/\s+/g, "_"));
   }
 });
-const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } });
+const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } });
 
 app.get("/", (req, res) => {
   res.send("Glynostic Backend is running.");
