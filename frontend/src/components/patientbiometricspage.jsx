@@ -73,6 +73,7 @@ export default function PatientBiometricsPage() {
   const [weight, setWeight] = useState(bioData.weight || '')
   const [height, setHeight] = useState(bioData.height || '')
   const [waist, setWaist] = useState(bioData.waist || '')
+  const [age, setAge] = useState(bioData.age || '')
 
   const bmi = useMemo(() => {
     const w = parseFloat(String(weight).replace(',', '.'))
@@ -87,7 +88,7 @@ export default function PatientBiometricsPage() {
   const category = useMemo(() => bmiCategoryLabel(bmi), [bmi])
 
   const handleContinue = () => {
-    updateAssessmentData('patientBiometrics', { weight, height, waist })
+    updateAssessmentData('patientBiometrics', { weight, height, waist, age })
     navigate('/paymentpage499')
   }
 
@@ -130,10 +131,10 @@ export default function PatientBiometricsPage() {
             {/* Header — gap 4px between title lines (251:2011) */}
             <div className="flex flex-col gap-1">
               <h1 className="font-['Manrope',sans-serif] text-[32px] font-semibold leading-10 tracking-[-0.32px] text-[#151c27]">
-                Biometrics
+                Body Mass Index
               </h1>
               <p className="max-w-[672px] text-base font-normal leading-6 text-[#57605f]">
-                These measurements help us calculate your metabolic risk factors.
+                BMI helps identify potential health risks linked to weight.
               </p>
             </div>
 
@@ -152,7 +153,20 @@ export default function PatientBiometricsPage() {
                     </h2>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2">
+                    <label className="flex flex-col gap-1">
+                      <span className="text-xs font-semibold leading-4 tracking-[0.6px] text-[#3e4945]">
+                        Age (years)
+                      </span>
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        value={age}
+                        onChange={(e) => setAge(e.target.value)}
+                        placeholder="00"
+                        className="h-12 w-full rounded-[12px] border-0 bg-[rgba(150,235,213,0.37)] px-4 text-base font-normal leading-normal text-[#151c27] placeholder:text-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#003d9b]/30"
+                      />
+                    </label>
                     <label className="flex flex-col gap-1">
                       <span className="text-xs font-semibold leading-4 tracking-[0.6px] text-[#3e4945]">
                         Weight (kg)

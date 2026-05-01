@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { ASSETS } from "../../public/assets/figmaAssets"
 /** Figma MCP — node 256:6150 (refresh via get_design_context if URLs expire) */
 const logo = 'https://www.figma.com/api/mcp/asset/5116c326-1a6b-4e79-bbc1-dedb44bda793'
@@ -42,6 +42,16 @@ export default function NintydaysPage() {
   const [upiId, setUpiId] = useState('glynostic@upi')
   const [copyLabel, setCopyLabel] = useState('Copy')
 
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.async = true
+    document.body.appendChild(script)
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
+
   const copyUpi = useCallback(() => {
     if (!navigator.clipboard?.writeText) return
     void navigator.clipboard.writeText(upiId).then(
@@ -49,9 +59,62 @@ export default function NintydaysPage() {
         setCopyLabel('Copied')
         setTimeout(() => setCopyLabel('Copy'), 2000)
       },
-      () => {},
+      () => { },
     )
   }, [upiId])
+
+  const handlePayment = async () => {
+    if (!fullName || !mobile || !email) {
+      alert("Please fill all details in the form first.");
+      return;
+    }
+    
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+      const response = await fetch(`${apiUrl}/payment/create-order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: 499900 }) // 4999 in paise
+      });
+
+      const order = await response.json();
+
+      if (!order.id) {
+        alert("Failed to create order. Please try again.");
+        return;
+      }
+
+      const options = {
+        key: 'rzp_test_SkBZG3Am6HG8mr',
+        amount: order.amount,
+        currency: order.currency,
+        name: 'Glynostic',
+        description: '90-Day Metabolic Reversal Program',
+        order_id: order.id,
+        handler: function (response) {
+          alert('Payment Successful! Welcome to the 90-Day Program.');
+          // Navigate to a success page or dashboard
+        },
+        prefill: {
+          name: fullName || '',
+          email: email || '',
+          contact: mobile || '',
+        },
+        theme: {
+          color: '#003d9b'
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', function (response) {
+        alert("Payment Failed: " + response.error.description);
+      });
+      rzp.open();
+    } catch (error) {
+      console.error("Payment error:", error);
+      alert("Error initiating payment");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#f7fafc] font-['Inter',sans-serif] text-[#151c27] antialiased">
@@ -124,7 +187,7 @@ export default function NintydaysPage() {
           <div className="relative w-full max-w-[474px] shrink-0 lg:w-[473.61px]">
             <div className="pointer-events-none absolute inset-0 rounded-full bg-[#9df3dc] opacity-30 blur-[40px]" aria-hidden />
             <div className="relative mx-auto aspect-square w-full max-w-[360px] overflow-hidden rounded-[32px] border-4 border-white shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] sm:max-w-[473.61px]">
-              <img alt="" src={heroImage} className="h-full w-full object-cover" />
+              <img alt="" src="../../public/assets/Unted-1.jpg" className="h-full w-full object-cover" />
             </div>
           </div>
         </section>
@@ -253,58 +316,83 @@ export default function NintydaysPage() {
         >
           <div className="flex flex-col lg:flex-row">
             {/* Left payment */}
-            <div className="flex w-full flex-col gap-8 border-b border-solid border-[#f3f4f6] bg-[#f9f9ff] px-6 py-10 sm:px-12 sm:py-12 lg:w-[50%] lg:max-w-[615.5px] lg:border-b-0 lg:border-r lg:pr-[49px]">
+            <div className="flex w-full flex-col justify-center gap-8 border-b border-solid border-[#f3f4f6] bg-[#f9f9ff] px-6 py-10 sm:px-12 sm:py-12 lg:w-[50%] lg:max-w-[615.5px] lg:border-b-0 lg:border-r lg:pr-[49px]">
               <h2 className="font-['Manrope',sans-serif] text-3xl font-semibold leading-10 tracking-[-0.32px] text-[#005344] sm:text-[32px]">
                 Secure Enrollment
               </h2>
-              <div className="rounded-2xl bg-[#003d9b] px-6 py-6">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.6px] text-white opacity-80">
-                      90-DAY PROGRAM TOTAL
-                    </p>
-                    <div className="mt-1 flex flex-wrap items-baseline gap-2">
-                      <span className="text-[30px] font-semibold leading-9 text-white">₹4999</span>
-                      <span className="text-sm font-normal text-white opacity-70">inc. GST</span>
+              
+              <div className="relative mt-2 overflow-hidden rounded-[28px] border border-white/40 bg-gradient-to-b from-[#f1f3f5] to-[#e4e4e9] p-4 sm:p-6 shadow-[0px_20px_40px_-10px_rgba(0,0,0,0.08),inset_0px_2px_4px_rgba(255,255,255,0.8)]">
+                
+                {/* Top Bar */}
+                <div className="mb-5 flex items-center justify-between pl-1">
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#8a80f8] to-[#6a61eb] shadow-[0px_4px_10px_rgba(91,81,230,0.3)]">
+                      <div className="size-3.5 rounded-full bg-white shadow-inner" />
                     </div>
+                    <span className="text-lg font-bold tracking-tight text-[#111827]">90-Day Program</span>
                   </div>
-                  <div className="rounded-full bg-[rgba(255,255,255,0.2)] px-4 py-2 text-sm font-semibold text-white">
+                  <div className="rounded-full bg-[#5b51e6] px-3 py-1.5 text-xs font-semibold text-white shadow-sm">
                     Best Value
                   </div>
                 </div>
-              </div>
 
-              <div className="flex w-full max-w-[498px] flex-col items-center rounded-2xl border-2 border-dashed border-[#bec9c4] bg-white px-[34px] pb-8 pt-12">
-                <div className="mb-6 flex h-40 w-48 items-center justify-center rounded-lg bg-[#f3f4f6]" aria-hidden />
-                <p className="text-center text-sm font-normal leading-5 text-[#3e4945]">
-                  Scan this QR with any UPI app (GPay, PhonePe, Paytm)
-                </p>
-              </div>
+                {/* To section */}
+                <div className="mb-3 rounded-[22px] border border-white/60 bg-white/70 px-5 py-4 shadow-[0px_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white/90">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[16px] font-medium text-[#6b7280]">To</span>
+                    <div className="flex items-center gap-2">
+                      <div className="size-4 rounded-md bg-[#059669] shadow-[0px_2px_6px_rgba(5,150,105,0.4)]" />
+                      <span className="text-[16px] font-bold text-[#111827]">Glynostic</span>
+                    </div>
+                  </div>
+                </div>
 
-              <div className="flex w-full max-w-[498px] flex-col gap-4 pt-2">
-                <label className="block text-base font-semibold leading-6 text-[#005344]" htmlFor="upi-id">
-                  Or Pay via UPI ID
-                </label>
-                <div className="relative w-full">
-                  <input
-                    id="upi-id"
-                    type="text"
-                    value={upiId}
-                    onChange={(e) => setUpiId(e.target.value)}
-                    className="w-full rounded-xl border border-solid border-[#bec9c4] bg-[#f9fafb] py-[17px] pl-[21px] pr-[88px] font-mono text-lg leading-7 text-[#151c27] outline-none focus:ring-2 focus:ring-[#003d9b]/25"
-                    autoComplete="off"
-                  />
+                {/* From, Pay on, Fee section */}
+                <div className="mb-3 space-y-5 rounded-[22px] border border-white/60 bg-white/70 px-5 py-5 shadow-[0px_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white/90">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[16px] font-medium text-[#6b7280]">From</span>
+                    <div className="flex items-center gap-2 text-[16px] font-bold text-[#111827]">
+                      <div className="flex size-[18px] items-center justify-center rounded-md bg-gradient-to-br from-[#f97316] to-[#ea580c] text-[10px] text-white shadow-[0px_2px_6px_rgba(234,88,12,0.4)]">
+                        ✓
+                      </div>
+                      {fullName || 'Guest User'}
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[16px] font-medium text-[#6b7280]">Pay on</span>
+                    <span className="text-[16px] font-bold text-[#111827]">
+                      {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[16px] font-medium text-[#6b7280]">Fee (0%)</span>
+                    <span className="text-[16px] font-bold text-[#111827]">₹0.00</span>
+                  </div>
+                </div>
+
+                {/* Total & Button section */}
+                <div className="rounded-[22px] border border-white/60 bg-white/70 px-5 py-5 shadow-[0px_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-md">
+                  <div className="flex items-end justify-between pb-6 pl-1 pt-1">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[16px] font-medium text-[#6b7280]">Total</span>
+                      <span className="text-[36px] font-black tracking-tight text-[#111827] drop-shadow-sm">₹4999.00</span>
+                    </div>
+                    <span className="mb-2.5 text-[15px] font-medium text-[#6b7280]">inc. GST</span>
+                  </div>
+
                   <button
-                    type="button"
-                    onClick={copyUpi}
-                    className="absolute inset-y-0 right-0 flex items-center px-4 text-base font-semibold leading-6 text-[#005344]"
-                  >
-                    {copyLabel}
+                    onClick={handlePayment}
+                    className="group flex w-full items-center justify-between overflow-hidden rounded-[24px] bg-gradient-to-r from-[#6a61eb] to-[#5b51e6] p-1.5 text-[18px] font-bold text-white shadow-[0px_10px_20px_-5px_rgba(91,81,230,0.5),inset_0px_2px_4px_rgba(255,255,255,0.3)] transition-all hover:scale-[1.02] hover:shadow-[0px_14px_25px_-5px_rgba(91,81,230,0.6)] active:scale-[0.98]">
+                    <div className="relative flex size-[48px] shrink-0 items-center justify-center rounded-full bg-white/20 shadow-inner backdrop-blur-sm transition-transform duration-300 group-hover:translate-x-2">
+                      <span className="text-xl font-light drop-shadow-md">→</span>
+                    </div>
+                    <span className="absolute left-1/2 -translate-x-1/2 tracking-[0.5px] drop-shadow-md">Enroll Now</span>
+                    <div className="size-[48px] shrink-0" />
                   </button>
                 </div>
               </div>
 
-              <div className="flex w-full max-w-[498px] flex-wrap items-center justify-between gap-6 border-t border-transparent pt-4">
+              <div className="mt-4 flex w-full flex-wrap items-center justify-between gap-6 px-2">
                 <div className="flex flex-col items-center gap-2">
                   <IconWrap src={trustSecure} className="h-5 w-4" />
                   <span className="text-center text-[10px] font-semibold uppercase leading-[15px] tracking-[1px] text-[#3e4945]">
@@ -384,8 +472,9 @@ export default function NintydaysPage() {
                   />
                 </label>
                 <button
-                  type="submit"
-                  className="relative w-full overflow-hidden rounded-xl bg-[#003d9b] py-5 text-lg font-semibold leading-7 text-white shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1),0px_4px_6px_-4px_rgba(0,0,0,0.1)]"
+                  type="button"
+                  onClick={handlePayment}
+                  className="relative w-full overflow-hidden rounded-xl bg-[#003d9b] py-5 text-lg font-semibold leading-7 text-white shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1),0px_4px_6px_-4px_rgba(0,0,0,0.1)] hover:bg-[#002f7a] transition-colors"
                 >
                   Complete Enrollment
                 </button>

@@ -264,8 +264,9 @@ app.post("/api/payment/create-order", async (req, res) => {
       key_secret: process.env.RAZORPAY_KEY_SECRET || 'dummy_secret',
     });
 
+    const { amount } = req.body;
     const options = {
-      amount: 49900, // amount in smallest currency unit (paise)
+      amount: amount || 49900, // amount in smallest currency unit (paise)
       currency: "INR",
       receipt: "receipt_order_" + Date.now(),
     };

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ASSETS } from '../../public/assets/figmaAssets'
 import { useAuth } from '../context/AuthContext'
+import { useAssessment } from '../context/AssessmentContext'
 import { useNavigate } from 'react-router-dom'
 const imgMedicalDashboard =
   'https://www.figma.com/api/mcp/asset/9b60335d-b272-418b-bb36-29776756d891'
@@ -40,13 +41,14 @@ const listItems = [
 ]
 
 const postPaymentItems = [
-  'Instant access to our Metabolic Questionnaire dashboard.',
-  'Complete your health profile (takes 5-8 mins).',
-  'Receive your clinical PDF report via Email & WhatsApp.',
+  'Your personalized metabolic report will be generated within 24 hours.',
+  'The report will be shared on your WhatsApp and registered email.',
+  '100% secure payment to proceed.',
 ]
 
 export default function PaymentPage499() {
   const { user, logout, loading } = useAuth()
+  const { assessmentData } = useAssessment()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -54,6 +56,64 @@ export default function PaymentPage499() {
       navigate('/')
     }
   }, [user, loading, navigate])
+
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.async = true
+    document.body.appendChild(script)
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script)
+      }
+    }
+  }, [])
+
+  const handlePayment = async () => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+      const response = await fetch(`${apiUrl}/payment/create-order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const order = await response.json();
+
+      if (!order.id) {
+        alert("Failed to create order. Please try again.");
+        return;
+      }
+
+      const options = {
+        key: 'rzp_test_SkBZG3Am6HG8mr',
+        amount: order.amount,
+        currency: order.currency,
+        name: 'Glynostic',
+        description: 'Metabolic Health Assessment',
+        order_id: order.id,
+        handler: function (response) {
+          navigate('/patient-summary');
+        },
+        prefill: {
+          name: user?.name || '',
+          email: user?.email || '',
+          contact: assessmentData?.patientInfo?.mobile || '',
+        },
+        theme: {
+          color: '#003d9b'
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', function (response) {
+        alert("Payment Failed: " + response.error.description);
+      });
+      rzp.open();
+    } catch (err) {
+      console.error("Payment error:", err);
+      alert("Something went wrong initializing the payment.");
+    }
+  }
 
   if (loading || !user) {
     return (
@@ -80,7 +140,7 @@ export default function PaymentPage499() {
             ) : (
               <img src={imgAccountIcon} alt="" className="hidden size-5 sm:block" />
             )}
-            <button 
+            <button
               onClick={() => {
                 if (user) {
                   logout()
@@ -109,7 +169,7 @@ export default function PaymentPage499() {
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
           <article className="overflow-hidden rounded-xl border border-[rgba(190,201,196,0.2)] bg-white shadow-[0px_4px_32px_rgba(0,0,0,0.04)] lg:col-span-7">
             <div className="relative h-[240px] w-full overflow-hidden sm:h-[320px] lg:h-[396px]">
-              <img src={imgMedicalDashboard} alt="" className="h-full w-full object-cover" />
+              <img src="../../public/assets/MockUp_1.png" alt="" className="h-full w-full object-cover" />
               <span className="absolute left-4 top-3 rounded-full bg-[#003d9b] px-3 py-[3.5px] text-xs font-semibold uppercase tracking-[0.6px] text-white">
                 METABOLIC EXCELLENCE
               </span>
@@ -188,97 +248,78 @@ export default function PaymentPage499() {
               </div>
 
 
-              <div className="py-2">
-                <div className="mt-6 rounded-xl border-2 border-[#003d9b] p-[18px]">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <img src={imgUpiIcon} alt="" className="size-[18px]" />
-                      <span className="text-base font-semibold leading-6 text-[#151c27]">UPI / QR Code</span>
+              <div className="py-4">
+                <div className="relative mt-2 overflow-hidden rounded-[28px] border border-white/40 bg-gradient-to-b from-[#f1f3f5] to-[#e4e4e9] p-4 sm:p-6 shadow-[0px_20px_40px_-10px_rgba(0,0,0,0.08),inset_0px_2px_4px_rgba(255,255,255,0.8)]">
+
+                  {/* Top Bar */}
+                  <div className="mb-5 flex items-center gap-3 pl-1">
+                    <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#8a80f8] to-[#6a61eb] shadow-[0px_4px_10px_rgba(91,81,230,0.3)]">
+                      <div className="size-3.5 rounded-full bg-white shadow-inner" />
                     </div>
-                    <span className="rounded bg-[#003d9b] px-2 py-[2px] text-[10px] font-semibold uppercase leading-[15px] text-white">
-                      RECOMMENDED
-                    </span>
+                    <span className="text-lg font-bold tracking-tight text-[#111827]">Pay in full</span>
                   </div>
 
-                  <div className="mt-4 flex h-[280px] flex-col items-center justify-end rounded-lg border border-[#003d9b] bg-white pb-[17px] sm:h-[352px]">
-                    <div className="mb-2 h-[128px] w-[128px] bg-white" />
-                    <p className="text-xs font-medium leading-4 text-[#57605f]">Scan with any UPI App</p>
-                  </div>
-
-                  <div className="mt-4 flex items-center justify-between rounded-lg border border-[rgba(190,201,196,0.3)] px-[13px] py-[13px]">
-                    <span className="text-sm font-medium leading-5 text-[#151c27]">glynostic@upi</span>
-                    <button className="text-xs font-semibold uppercase leading-4 text-[#003d9b]">COPY</button>
-                  </div>
-                </div>
-
-                <div className="mt-6 rounded-xl border border-[rgba(190,201,196,0.3)] p-[17px]">
-                  <div className="flex items-center gap-2">
-                    <img src={imgCardIcon} alt="" className="h-4 w-5" />
-                    <span className="text-base font-semibold leading-6 text-[#151c27]">Card Payment</span>
-                  </div>
-
-                  <div className="mt-6 space-y-4">
-                    <label className="block">
-                      <span className="text-[10px] font-semibold uppercase leading-[15px] text-[#57605f]">
-                        CARD NUMBER
-                      </span>
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        placeholder="XXXX XXXX XXXX XXXX"
-                        className="mt-1 w-full rounded-lg border border-[#bec9c4] px-[17px] py-[15px] text-base text-[#6b7280]"
-                      />
-                    </label>
-                    <label className="block">
-                      <span className="text-[10px] font-semibold uppercase leading-[15px] text-[#57605f]">
-                        NAME ON CARD
-                      </span>
-                      <input
-                        type="text"
-                        placeholder="FULL NAME"
-                        className="mt-1 w-full rounded-lg border border-[#bec9c4] px-[17px] py-[15px] text-base text-[#6b7280]"
-                      />
-                    </label>
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <label className="block">
-                        <span className="text-[10px] font-semibold uppercase leading-[15px] text-[#57605f]">
-                          EXPIRY DATE
-                        </span>
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          placeholder="MM/YY"
-                          className="mt-1 w-full rounded-lg border border-[#bec9c4] px-[17px] py-[15px] text-base text-[#6b7280]"
-                        />
-                      </label>
-                      <label className="block">
-                        <span className="text-[10px] font-semibold uppercase leading-[15px] text-[#57605f]">
-                          CVV
-                        </span>
-                        <input
-                          type="password"
-                          inputMode="numeric"
-                          placeholder="***"
-                          className="mt-1 w-full rounded-lg border border-[#bec9c4] px-[17px] py-[15px] text-base text-[#6b7280]"
-                        />
-                      </label>
+                  {/* To section */}
+                  <div className="mb-3 rounded-[22px] border border-white/60 bg-white/70 px-5 py-4 shadow-[0px_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white/90">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[16px] font-medium text-[#6b7280]">To</span>
+                      <div className="flex items-center gap-2">
+                        <div className="size-4 rounded-md bg-[#059669] shadow-[0px_2px_6px_rgba(5,150,105,0.4)]" />
+                        <span className="text-[16px] font-bold text-[#111827]">Glynostic</span>
+                      </div>
                     </div>
+                  </div>
+
+                  {/* From, Pay on, Fee section */}
+                  <div className="mb-3 space-y-5 rounded-[22px] border border-white/60 bg-white/70 px-5 py-5 shadow-[0px_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white/90">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[16px] font-medium text-[#6b7280]">From</span>
+                      <div className="flex items-center gap-2 text-[16px] font-bold text-[#111827]">
+                        <div className="flex size-[18px] items-center justify-center rounded-md bg-gradient-to-br from-[#f97316] to-[#ea580c] text-[10px] text-white shadow-[0px_2px_6px_rgba(234,88,12,0.4)]">
+                          ✓
+                        </div>
+                        {user?.name || 'Guest User'}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[16px] font-medium text-[#6b7280]">Pay on</span>
+                      <span className="text-[16px] font-bold text-[#111827]">
+                        {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[16px] font-medium text-[#6b7280]">Fee (0%)</span>
+                      <span className="text-[16px] font-bold text-[#111827]">₹0.00</span>
+                    </div>
+                  </div>
+
+                  {/* Total & Button section */}
+                  <div className="rounded-[22px] border border-white/60 bg-white/70 px-5 py-5 shadow-[0px_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-md">
+                    <div className="flex items-end justify-between pb-6 pl-1 pt-1">
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[16px] font-medium text-[#6b7280]">Total</span>
+                        <span className="text-[36px] font-black tracking-tight text-[#111827] drop-shadow-sm">₹499.00</span>
+                      </div>
+                      <button className="mb-2.5 text-[15px] font-semibold text-[#5b51e6] transition-colors hover:text-[#453abd] hover:underline">See details</button>
+                    </div>
+
+                    <button
+                      onClick={handlePayment}
+                      className="group flex w-full items-center justify-between overflow-hidden rounded-[24px] bg-gradient-to-r from-[#6a61eb] to-[#5b51e6] p-1.5 text-[18px] font-bold text-white shadow-[0px_10px_20px_-5px_rgba(91,81,230,0.5),inset_0px_2px_4px_rgba(255,255,255,0.3)] transition-all hover:scale-[1.02] hover:shadow-[0px_14px_25px_-5px_rgba(91,81,230,0.6)] active:scale-[0.98]">
+                      <div className="relative flex size-[48px] shrink-0 items-center justify-center rounded-full bg-white/20 shadow-inner backdrop-blur-sm transition-transform duration-300 group-hover:translate-x-2">
+                        <span className="text-xl font-light drop-shadow-md">→</span>
+                      </div>
+                      <span className="absolute left-1/2 -translate-x-1/2 tracking-[0.5px] drop-shadow-md">Pay in full</span>
+                      <div className="size-[48px] shrink-0" />
+                    </button>
                   </div>
                 </div>
               </div>
 
-              <button 
-                onClick={() => navigate('/patient-summary')}
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-[#003d9b] py-4 text-base font-semibold leading-6 text-white shadow-[0px_10px_15px_-3px_rgba(0,83,68,0.2),0px_4px_6px_-4px_rgba(0,83,68,0.2)]">
-                Pay ₹499 Securely
-                <img src={imgArrowIcon} alt="" className="size-[13px]" />
-              </button>
-
               <div className="mt-5 flex items-center justify-center gap-2 opacity-60">
                 <span className="text-[10px] font-semibold uppercase tracking-[1px] text-[#57605f]">
-                  POWERED BY
+                  POWERED BY Glynostic
                 </span>
-                <img src={imgRazorpay} alt="Razorpay" className="size-4 object-cover" />
               </div>
             </div>
           </aside>
