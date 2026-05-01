@@ -390,7 +390,7 @@ export default function GlynosticLanding() {
               <div className="gl-report-gl__tilt">
                 <div className="gl-report-gl__preview">
                   <Img
-                    src="../../public/assets/MockUp.png"
+                    src="/assets/MockUp.png"
                     alt=""
                     width={600}
                     height={600}
