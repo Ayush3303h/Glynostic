@@ -247,7 +247,7 @@ app.post("/api/upload", upload.array("files", 10), (req, res) => {
     }
     const fileUrls = req.files.map((file) => ({
       name: file.originalname,
-      url: `http://localhost:5000/uploads/${file.filename}`
+      url: `${req.protocol}://${req.get('host')}/uploads/${file.filename}`
     }));
     res.json({ files: fileUrls });
   } catch (error) {

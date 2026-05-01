@@ -84,7 +84,8 @@ export default function PatientDetailPage() {
       return;
     }
 
-    fetch('http://localhost:5000/api/doctor/patients')
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    fetch(`${apiUrl}/doctor/patients`)
       .then(r => r.json())
       .then(all => {
         setPatient((all || []).find(p => p._id === patientId) || null);
@@ -98,7 +99,8 @@ export default function PatientDetailPage() {
     setToggling(true);
     const newStatus = !(patient.assessmentData?.reportDone || false);
     try {
-      await fetch(`http://localhost:5000/api/doctor/patients/${patientId}/report`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      await fetch(`${apiUrl}/doctor/patients/${patientId}/report`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ done: newStatus })

@@ -102,7 +102,8 @@ export default function PatientHistoryPage() {
       files.forEach(file => formData.append('files', file))
 
       try {
-        const res = await fetch('http://localhost:5000/api/upload', {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+        const res = await fetch(`${apiUrl}/upload`, {
           method: 'POST',
           body: formData
         })

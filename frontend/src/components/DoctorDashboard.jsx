@@ -19,7 +19,8 @@ export default function DoctorDashboard() {
 
   const fetchPatients = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/doctor/patients');
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${apiUrl}/doctor/patients`);
       const data = await res.json();
       setPatients(data || []);
     } catch (err) {
