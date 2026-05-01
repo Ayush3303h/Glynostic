@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAssessment } from '../context/AssessmentContext'
 import { useAuth } from '../context/AuthContext'
+import { ASSETS } from '../../public/assets/figmaAssets'
 
 const logo = 'https://www.figma.com/api/mcp/asset/1c6213eb-a0bd-4d3e-b074-11129c54703f'
 const accountIcon = 'https://www.figma.com/api/mcp/asset/0baa08e4-7375-4104-948f-3162e9bbd12e'
@@ -61,7 +62,7 @@ export default function PatientSummaryPage() {
       <header className="border-b border-solid border-[#f1f5f9] bg-[rgba(255,255,255,0.8)] shadow-[0px_4px_10px_rgba(0,82,204,0.05)] backdrop-blur-[6px]">
         <div className="mx-auto flex h-full w-full max-w-[1280px] items-center justify-between px-6 py-4 sm:px-6 lg:px-[86px]">
           <img
-            src={logo}
+            src={ASSETS.navbarLogo}
             alt="Glynostic"
             className="h-8 w-[133px] shrink-0 object-contain object-left"
           />

@@ -11,7 +11,7 @@ function Img({ src, alt = '', className, width, height }) {
 }
 
 export default function GlynosticLanding() {
-  const { user, logout } = useAuth()
+  const { user, logout, login } = useAuth()
   const navigate = useNavigate()
   const [showLoginPrompt, setShowLoginPrompt] = useState(false)
 
@@ -23,14 +23,14 @@ export default function GlynosticLanding() {
   }
 
   const triggerGoogleLogin = () => {
-    setShowLoginPrompt(true)
+    login()
   }
 
   const handleCtaClick = (e, anchorId) => {
     e.preventDefault()
     if (user) {
       if (anchorId === 'assessment' || anchorId === 'program') {
-        navigate('/paymentpage499')
+        navigate('/patient-info')
       } else if (anchorId === 'nintydayspage') {
         navigate('/nintydayspage')
       } else {
@@ -44,7 +44,6 @@ export default function GlynosticLanding() {
   }
 
   const handleGetStartedClick = (e) => {
-    // Keep the same CTA behavior as other CTAs (login first, then scroll).
     e.preventDefault()
     if (user) {
       localStorage.removeItem(PENDING_ANCHOR_KEY)
@@ -52,7 +51,6 @@ export default function GlynosticLanding() {
       return
     }
 
-    localStorage.setItem(PENDING_ANCHOR_KEY, 'nav-assessment')
     triggerGoogleLogin()
   }
 
@@ -64,7 +62,7 @@ export default function GlynosticLanding() {
     if (pending === 'nav-assessment') {
       scrollToAnchor('assessment')
     } else if (pending === 'assessment' || pending === 'program') {
-      navigate('/paymentpage499')
+      navigate('/patient-info')
     } else {
       scrollToAnchor(pending)
     }
@@ -72,30 +70,7 @@ export default function GlynosticLanding() {
 
   return (
     <div className="gl-root">
-      {showLoginPrompt && !user ? (
-        <div
-          className="gl-login-overlay"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Sign in"
-          onClick={() => setShowLoginPrompt(false)}
-        >
-          <div className="gl-login-panel" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="gl-login-panel__close"
-              type="button"
-              aria-label="Close sign in"
-              onClick={() => setShowLoginPrompt(false)}
-            >
-              ×
-            </button>
-            <div className="gl-login-panel__body">
-              <h2 className="gl-login-panel__title">Sign in to continue</h2>
-              <Login width="280" />
-            </div>
-          </div>
-        </div>
-      ) : null}
+      {/* Clerk handles its own modal via openSignIn() */}
       <header className="gl-header-bar">
         <div className="gl-header-bar__shell">
           <a className="gl-logo-lockup" href="#top" aria-label="Glynostic home">
@@ -434,7 +409,7 @@ export default function GlynosticLanding() {
                   my usual blood tests said everything was fine.&rdquo;
                 </p>
                 <div className="gl-report-gl__author">
-                  <span className="gl-report-gl__author-avatar" aria-hidden />
+                  <span className="gl-report-gl__author-avatar" aria-hidden >RM</span>
                   <span>Rahul Mehta</span>
                 </div>
               </aside>

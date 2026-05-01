@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAssessment } from '../context/AssessmentContext'
 import { useAuth } from '../context/AuthContext'
+import { ASSETS } from '../../public/assets/figmaAssets'
 
 const logo = 'https://www.figma.com/api/mcp/asset/28ec0a78-b960-4809-9051-9f5aa90c8a80'
 const accountIcon = 'https://www.figma.com/api/mcp/asset/0e62cbe0-c424-41ce-98e0-b829a57b9487'
@@ -39,17 +40,15 @@ export default function PatientHistoryPage() {
 
   const [selectedConditions, setSelectedConditions] = useState(historyData.selectedConditions || [])
   const [otherCondition, setOtherCondition] = useState(historyData.otherCondition || '')
-  const [diabetesHistory, setDiabetesHistory] = useState(historyData.diabetesHistory || 'yes')
-  const [heartDiseaseHistory, setHeartDiseaseHistory] = useState(historyData.heartDiseaseHistory || 'no')
+  const [diabetesHistory, setDiabetesHistory] = useState(historyData.diabetesHistory || '')
+  const [heartDiseaseHistory, setHeartDiseaseHistory] = useState(historyData.heartDiseaseHistory || '')
   const [relation, setRelation] = useState(historyData.relation || '')
-  const [exercise, setExercise] = useState(historyData.exercise || '3-4 times / week')
+  const [exercise, setExercise] = useState(historyData.exercise || '')
   const [smoke, setSmoke] = useState(historyData.smoke || false)
-  const [alcohol, setAlcohol] = useState(historyData.alcohol || true)
+  const [alcohol, setAlcohol] = useState(historyData.alcohol || false)
   const [files, setFiles] = useState([])
-  const [medications, setMedications] = useState(historyData.medications || [
-    { id: 1, name: 'Metformin', dosage: '500mg', frequency: 'Twice daily' },
-    { id: 2, name: 'Vitamin D3', dosage: '2000 IU', frequency: 'Once daily' },
-  ])
+  const [medications, setMedications] = useState(historyData.medications || [])
+  const [error, setError] = useState('')
 
   const toggleCondition = (condition) => {
     setSelectedConditions((prev) =>
@@ -79,7 +78,47 @@ export default function PatientHistoryPage() {
     setFiles(selected)
   }
 
-  const handleContinue = () => {
+  const [isUploading, setIsUploading] = useState(false)
+
+  const handleContinue = async () => {
+    if (!diabetesHistory) {
+      setError('Please indicate your diabetes family history.')
+      return
+    }
+    if (!heartDiseaseHistory) {
+      setError('Please indicate your heart disease family history.')
+      return
+    }
+    if (!exercise) {
+      setError('Please select your exercise frequency.')
+      return
+    }
+    setError('')
+
+    let uploadedFilesData = [];
+    if (files.length > 0) {
+      setIsUploading(true)
+      const formData = new FormData()
+      files.forEach(file => formData.append('files', file))
+
+      try {
+        const res = await fetch('http://localhost:5000/api/upload', {
+          method: 'POST',
+          body: formData
+        })
+        const data = await res.json()
+        if (data.files) {
+          uploadedFilesData = data.files
+        }
+      } catch (err) {
+        console.error('File upload failed:', err)
+        setError('Failed to upload files. Please try again.')
+        setIsUploading(false)
+        return
+      }
+      setIsUploading(false)
+    }
+
     updateAssessmentData('patientHistory', {
       selectedConditions,
       otherCondition,
@@ -89,7 +128,8 @@ export default function PatientHistoryPage() {
       exercise,
       smoke,
       alcohol,
-      medications
+      medications,
+      files: uploadedFilesData
     })
     navigate('/patient-lifestyle')
   }
@@ -98,7 +138,7 @@ export default function PatientHistoryPage() {
     <div className="min-h-screen bg-[#f7fafc] font-['Inter',sans-serif] text-[#151c27]">
       <header className="border-b border-[#f1f5f9] bg-[rgba(255,255,255,0.8)] px-4 shadow-[0px_4px_10px_rgba(0,82,204,0.05)] backdrop-blur-[6px] sm:px-8 lg:px-[86px]">
         <div className="mx-auto flex h-[68px] w-full max-w-[1280px] items-center justify-between">
-          <img src={logo} alt="Glynostic" className="h-8 w-[133px] object-contain object-left" />
+          <img src={ASSETS.navbarLogo} alt="Glynostic" className="h-8 w-[133px] object-contain object-left" />
           <div className="flex items-center gap-4">
             {user ? (
               <>
@@ -258,21 +298,24 @@ export default function PatientHistoryPage() {
                         <input
                           value={med.name}
                           onChange={(e) => updateMedication(med.id, 'name', e.target.value)}
-                          className="w-full bg-transparent text-base focus:outline-none"
+                          placeholder="e.g. Metformin"
+                          className="w-full rounded-lg border border-[#e2e8f0] bg-[#f8fafc] px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-[#96ebd5]"
                         />
                       </td>
                       <td className="px-6 py-4">
                         <input
                           value={med.dosage}
                           onChange={(e) => updateMedication(med.id, 'dosage', e.target.value)}
-                          className="w-full bg-transparent text-base focus:outline-none"
+                          placeholder="e.g. 500mg"
+                          className="w-full rounded-lg border border-[#e2e8f0] bg-[#f8fafc] px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-[#96ebd5]"
                         />
                       </td>
                       <td className="px-6 py-4">
                         <input
                           value={med.frequency}
                           onChange={(e) => updateMedication(med.id, 'frequency', e.target.value)}
-                          className="w-full bg-transparent text-base focus:outline-none"
+                          placeholder="e.g. Twice daily"
+                          className="w-full rounded-lg border border-[#e2e8f0] bg-[#f8fafc] px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-[#96ebd5]"
                         />
                       </td>
                       <td className="px-6 py-4 text-right">
@@ -372,10 +415,15 @@ export default function PatientHistoryPage() {
             </section>
           </div>
 
+          {error && <p className="mt-4 text-sm text-red-500 font-semibold">{error}</p>}
           <div className="mt-8 flex justify-center lg:justify-end">
-            <button onClick={handleContinue} className="flex items-center gap-3 rounded-full bg-[#003d9b] px-10 py-4 text-lg text-white shadow-[0px_10px_15px_-3px_rgba(0,83,68,0.2),0px_4px_6px_-4px_rgba(0,83,68,0.2)]">
-              Continue
-              <img src={continueArrow} alt="" className="size-4" />
+            <button 
+              onClick={handleContinue} 
+              disabled={isUploading}
+              className={`flex items-center gap-3 rounded-full bg-[#003d9b] px-10 py-4 text-lg text-white shadow-[0px_10px_15px_-3px_rgba(0,83,68,0.2),0px_4px_6px_-4px_rgba(0,83,68,0.2)] ${isUploading ? 'opacity-70 cursor-wait' : ''}`}
+            >
+              {isUploading ? 'Uploading...' : 'Continue'}
+              {!isUploading && <img src={continueArrow} alt="" className="size-4" />}
             </button>
           </div>
         </section>

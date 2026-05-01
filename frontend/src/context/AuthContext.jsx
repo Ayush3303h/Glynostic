@@ -1,19 +1,26 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
+import { useUser, useClerk } from "@clerk/clerk-react";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState({
-    name: "Guest User",
-    email: "guest@example.com",
-    picture: "https://www.figma.com/api/mcp/asset/d71d00d6-ab7c-4fe1-b4eb-3370ca93bd6e"
-  });
+  const { user, isLoaded, isSignedIn } = useUser();
+  const { openSignIn, signOut } = useClerk();
 
-  const login = () => {};
-  const logout = () => {};
+  const authUser = isSignedIn ? {
+    name: user.fullName || user.firstName || "User",
+    email: user.primaryEmailAddress?.emailAddress,
+    picture: user.imageUrl,
+    id: user.id
+  } : null;
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading: false }}>
+    <AuthContext.Provider value={{ 
+      user: authUser, 
+      login: () => openSignIn(), 
+      logout: () => signOut(), 
+      loading: !isLoaded 
+    }}>
       {children}
     </AuthContext.Provider>
   );

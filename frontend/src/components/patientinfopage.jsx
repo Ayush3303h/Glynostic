@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAssessment } from '../context/AssessmentContext'
 import { useAuth } from '../context/AuthContext'
+import { ASSETS } from '../../public/assets/figmaAssets'
 
 const logo = 'https://www.figma.com/api/mcp/asset/18ff29d9-6ac5-4966-a428-4f1b9e067772'
 const accountIcon = 'https://www.figma.com/api/mcp/asset/a368c798-2fbb-4508-b447-9bb81fdf13e1'
@@ -36,16 +37,6 @@ export default function PatientInfoPage() {
   
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    if (user && !formData.email && !formData.fullName) {
-      setFormData(prev => ({
-        ...prev,
-        fullName: user.name || prev.fullName,
-        email: user.email || prev.email
-      }))
-    }
-  }, [user])
-
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -65,7 +56,7 @@ export default function PatientInfoPage() {
     <div className="min-h-screen bg-[#f1f5f9] font-['Inter',sans-serif] text-[#151c27]">
       <header className="border-b border-[#f1f5f9] bg-[rgba(255,255,255,0.8)] px-4 shadow-[0px_4px_10px_rgba(0,82,204,0.05)] backdrop-blur-[6px] sm:px-8 lg:px-[86px]">
         <div className="mx-auto flex h-[68px] w-full max-w-[1280px] items-center justify-between">
-          <img src={logo} alt="Glynostic" className="h-8 w-[133px] object-contain object-left" />
+          <img src={ASSETS.navbarLogo} alt="Glynostic" className="h-8 w-[133px] object-contain object-left" />
           <div className="flex items-center gap-4">
             {user ? (
               <>
@@ -107,7 +98,7 @@ export default function PatientInfoPage() {
                 <input
                   name="fullName"
                   type="text"
-                  value={formData.fullName}
+                  value={formData.fullName || ''}
                   onChange={handleChange}
                   placeholder="e.g. Mr Ayush"
                   className="mt-2 w-full rounded-lg border border-transparent bg-[rgba(150,235,213,0.39)] px-[13px] py-[15px] text-base text-[#151c27] placeholder:text-[#6b7280] outline-none focus:ring-2 focus:ring-[#96ebd5]"
@@ -119,7 +110,7 @@ export default function PatientInfoPage() {
                 <input
                   name="mobile"
                   type="tel"
-                  value={formData.mobile}
+                  value={formData.mobile || ''}
                   onChange={handleChange}
                   placeholder="+1 (555) 000-0000"
                   className="mt-2 w-full rounded-lg border border-transparent bg-[rgba(150,235,213,0.41)] px-[13px] py-[15px] text-base text-[#151c27] placeholder:text-[#6b7280] outline-none focus:ring-2 focus:ring-[#96ebd5]"
@@ -131,7 +122,7 @@ export default function PatientInfoPage() {
                 <input
                   name="email"
                   type="email"
-                  value={formData.email}
+                  value={formData.email || ''}
                   onChange={handleChange}
                   placeholder="patient@example.com"
                   className="mt-2 w-full rounded-lg border border-transparent bg-[rgba(150,235,213,0.37)] px-[13px] py-[15px] text-base text-[#151c27] placeholder:text-[#6b7280] outline-none focus:ring-2 focus:ring-[#96ebd5]"
@@ -142,11 +133,12 @@ export default function PatientInfoPage() {
                 <span className="text-xs font-semibold uppercase tracking-[0.6px] text-[#64748b]">DATE OF BIRTH</span>
                 <input
                   name="dob"
-                  type="text"
-                  value={formData.dob}
+                  type="date"
+                  value={formData.dob || ''}
                   onChange={handleChange}
-                  placeholder="mm/dd/yyyy"
-                  className="mt-2 w-full rounded-lg border border-transparent bg-[rgba(150,235,213,0.46)] px-[13px] py-[13px] text-base text-[#151c27] placeholder:text-[#151c27] outline-none focus:ring-2 focus:ring-[#96ebd5]"
+                  onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                  max={new Date().toISOString().split('T')[0]}
+                  className="mt-2 w-full rounded-lg border border-transparent bg-[rgba(150,235,213,0.46)] px-[13px] py-[13px] text-base text-[#151c27] outline-none focus:ring-2 focus:ring-[#96ebd5]"
                 />
               </label>
             </div>

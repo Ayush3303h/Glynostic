@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAssessment } from '../context/AssessmentContext'
 import { useAuth } from '../context/AuthContext'
+import { ASSETS } from '../../public/assets/figmaAssets'
 
 /** Figma MCP — refresh via get_design_context if URLs expire */
 const logo = 'https://www.figma.com/api/mcp/asset/33b53192-99d5-4b16-9d68-0a04a8f3482f'
@@ -34,7 +35,7 @@ function IconWrap({ src, className, alt = '' }) {
 
 function bmiCategoryLabel(bmi) {
   if (bmi === null || Number.isNaN(bmi))
-    return { pill: '—', lines: ['Enter your weight to preview your BMI.'] }
+    return { pill: '—', lines: ['Enter your weight and height to preview your BMI.'] }
   if (bmi < 18.5)
     return {
       pill: 'Underweight',
@@ -70,22 +71,24 @@ export default function PatientBiometricsPage() {
   const bioData = assessmentData.patientBiometrics || {}
 
   const [weight, setWeight] = useState(bioData.weight || '')
+  const [height, setHeight] = useState(bioData.height || '')
   const [waist, setWaist] = useState(bioData.waist || '')
 
   const bmi = useMemo(() => {
     const w = parseFloat(String(weight).replace(',', '.'))
-    if (Number.isNaN(w) || w <= 0) return null
-    const hm = DEFAULT_HEIGHT_CM / 100
+    const h = parseFloat(String(height).replace(',', '.'))
+    if (Number.isNaN(w) || w <= 0 || Number.isNaN(h) || h <= 0) return null
+    const hm = h / 100
     const v = w / (hm * hm)
     return Math.round(v * 10) / 10
-  }, [weight])
+  }, [weight, height])
 
   const gaugePercent = useMemo(() => bmiGaugePercent(bmi), [bmi])
   const category = useMemo(() => bmiCategoryLabel(bmi), [bmi])
 
   const handleContinue = () => {
-    updateAssessmentData('patientBiometrics', { weight, waist })
-    navigate('/patient-summary')
+    updateAssessmentData('patientBiometrics', { weight, height, waist })
+    navigate('/paymentpage499')
   }
 
   return (
@@ -93,7 +96,7 @@ export default function PatientBiometricsPage() {
       <header className="border-b border-solid border-[#f1f5f9] bg-[rgba(255,255,255,0.8)] shadow-[0px_4px_10px_rgba(0,82,204,0.05)] backdrop-blur-[6px]">
         <div className="mx-auto flex h-full w-full max-w-[1280px] items-center justify-between px-6 py-4 sm:px-6 lg:px-[86px]">
           <img
-            src={logo}
+            src={ASSETS.navbarLogo}
             alt="Glynostic"
             className="h-8 w-[133px] shrink-0 object-contain object-left"
           />
@@ -149,7 +152,7 @@ export default function PatientBiometricsPage() {
                     </h2>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     <label className="flex flex-col gap-1">
                       <span className="text-xs font-semibold leading-4 tracking-[0.6px] text-[#3e4945]">
                         Weight (kg)
@@ -165,7 +168,20 @@ export default function PatientBiometricsPage() {
                     </label>
                     <label className="flex flex-col gap-1">
                       <span className="text-xs font-semibold leading-4 tracking-[0.6px] text-[#3e4945]">
-                        Waist Circumference (cm)
+                        Height (cm)
+                      </span>
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        value={height}
+                        onChange={(e) => setHeight(e.target.value)}
+                        placeholder="000"
+                        className="h-12 w-full rounded-[12px] border-0 bg-[rgba(150,235,213,0.37)] px-4 text-base font-normal leading-normal text-[#151c27] placeholder:text-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#003d9b]/30"
+                      />
+                    </label>
+                    <label className="flex flex-col gap-1">
+                      <span className="text-xs font-semibold leading-4 tracking-[0.6px] text-[#3e4945]">
+                        Waist (cm)
                       </span>
                       <input
                         type="text"

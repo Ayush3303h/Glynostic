@@ -268,7 +268,7 @@ export default function PaymentPage499() {
               </div>
 
               <button 
-                onClick={() => navigate('/patient-info')}
+                onClick={() => navigate('/patient-summary')}
                 className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-[#003d9b] py-4 text-base font-semibold leading-6 text-white shadow-[0px_10px_15px_-3px_rgba(0,83,68,0.2),0px_4px_6px_-4px_rgba(0,83,68,0.2)]">
                 Pay ₹499 Securely
                 <img src={imgArrowIcon} alt="" className="size-[13px]" />

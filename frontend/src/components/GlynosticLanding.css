@@ -9,6 +9,8 @@
   --gl-page-base: #f7faff;
 }
 
+
+
 .gl-root {
   font-family:
     'Inter',
@@ -18,6 +20,7 @@
   color: var(--gl-navy);
   background-color: var(--gl-page-alt);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 .gl-inner {
@@ -118,11 +121,12 @@
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .gl-btn-gl:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 28px -4px rgba(0, 61, 155, 0.25);
 }
 
 .gl-btn-gl--pill.gl-btn-gl--navy-sm {
@@ -364,6 +368,7 @@
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(1px);
+  animation: glFloatGentle 5s ease-in-out infinite;
 }
 
 .gl-hero-top-chip__kicker {
@@ -510,11 +515,9 @@
   height: 622.25px;
   border-radius: 48px;
   transform: rotate(-2deg);
-  background-image: linear-gradient(
-    42.797401407774124deg,
-    rgb(2, 174, 162) 0%,
-    rgba(209, 250, 229, 0) 100%
-  );
+  background-image: linear-gradient(42.797401407774124deg,
+      rgb(2, 174, 162) 0%,
+      rgba(209, 250, 229, 0) 100%);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.16),
     0 16px 35px rgba(2, 174, 162, 0.14);
@@ -550,6 +553,7 @@
   border-radius: 16px;
   background: #fff;
   box-shadow: 0 10px 32px -4px rgba(0, 83, 68, 0.06);
+  animation: glFloatGentle 6s ease-in-out infinite;
 }
 
 .gl-hero-vis__floater-flower {
@@ -636,8 +640,9 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transform: none;
+  transform: translateY(-50%);
   z-index: 2;
+  animation: glFloatReverse 7s ease-in-out infinite;
 }
 
 .gl-hero-pill-chip {
@@ -683,29 +688,6 @@
     height: auto;
     min-height: 0;
   }
-
-  .gl-hero-vis__risk-stack {
-    position: relative;
-    right: auto;
-    top: auto;
-    transform: none;
-    flex-wrap: wrap;
-    margin-top: 16px;
-  }
-
-  .gl-hero-vis__floater--panel {
-    left: 12px;
-    bottom: 140px;
-  }
-}
-
-@media (max-width: 640px) {
-  .gl-hero-vis__floater--panel {
-    position: relative;
-    left: auto;
-    bottom: auto;
-    margin-top: -56px;
-  }
 }
 
 /* ---- Journey ---- */
@@ -742,16 +724,16 @@
 
 .gl-journey-card--interactive {
   transition:
-    transform 0.22s ease,
-    box-shadow 0.22s ease,
-    background 0.22s ease;
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.4s ease;
 }
 
 .gl-journey-card--interactive:hover,
 .gl-journey-card--interactive:focus-within {
-  transform: scale(1.05);
+  transform: translateY(-6px) scale(1.02);
   background: linear-gradient(180deg, #02b5a5 2%, #003d9b 100%);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 @media (max-width: 1024px) {
@@ -873,8 +855,10 @@
   flex-direction: column;
   align-items: stretch;
   transition:
-    background 0.22s ease,
-    color 0.22s ease;
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.4s ease,
+    color 0.4s ease;
 }
 
 .gl-b-cell--tall {
@@ -904,11 +888,9 @@
   position: absolute;
   inset: 0;
   border-radius: 32px;
-  background-image: linear-gradient(
-    180.07deg,
-    rgb(150, 235, 213) 0.13%,
-    rgba(0, 61, 155, 0) 149.31%
-  );
+  background-image: linear-gradient(180.07deg,
+      rgb(150, 235, 213) 0.13%,
+      rgba(0, 61, 155, 0) 149.31%);
   opacity: 0.94;
 }
 
@@ -1024,11 +1006,15 @@
 
 .gl-b-cell:hover,
 .gl-b-cell:focus-within {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px -12px rgba(0, 83, 68, 0.15);
   background: linear-gradient(180deg, #96ebd5 0%, #003d9b 100%);
 }
 
 .gl-b-cell:nth-child(even):hover,
 .gl-b-cell:nth-child(even):focus-within {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px -12px rgba(0, 83, 68, 0.15);
   background: linear-gradient(180deg, #003d9b 0%, #96ebd5 100%);
 }
 
@@ -1209,15 +1195,23 @@
   align-items: center;
   gap: 12px;
   padding-top: 8px;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gl-navy);
 }
 
 .gl-report-gl__author-avatar {
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: var(--gl-blue);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
 }
 
 .gl-report-rows {
@@ -1685,5 +1679,182 @@
 @media (max-width: 980px) {
   .gl-profile-cols {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ================================================== */
+/* FULL RESPONSIVENESS PATCHES (MOBILE & TABLET ONLY) */
+/* ================================================== */
+
+@media (max-width: 1024px) {
+  .gl-journey-card__title-lg {
+    font-size: clamp(20px, 4vw, 24px);
+    line-height: 1.2;
+  }
+
+  .gl-journey-card__lead {
+    font-size: clamp(14px, 3vw, 15px);
+  }
+
+  .gl-b-cell__ttl,
+  .gl-b-cell__ttl--ebx,
+  .gl-b-cell__ttl--inter,
+  .gl-b-cell__ttl-inv {
+    font-size: clamp(14px, 3vw, 16px);
+    line-height: 1.3;
+  }
+
+  .gl-b-cell__txt,
+  .gl-b-cell__txt-inv,
+  .gl-b-cell__txt--12 {
+    font-size: clamp(12px, 2.5vw, 14px);
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 840px) {
+
+  /* Change 'How It Works' to a centered vertical stack for flawless mobile rendering */
+  .gl-flow-gl__step {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 16px !important;
+  }
+
+  .gl-flow-gl__orb {
+    margin: 0 auto !important;
+  }
+
+  .gl-flow-gl__tit {
+    margin: 0 !important;
+  }
+
+  .gl-flow-gl__step .gl-flow-gl__sub {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gl-hero-h1 {
+    font-size: clamp(28px, 6vw, 40px);
+    line-height: 1.2;
+  }
+
+  .gl-btn-gl--hero-gr {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  .gl-btn-gl--hero-gr strong {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 840px) {
+  .gl-hero-section {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .gl-hero-section__wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  /* Force all bento cards to elegantly center their icons and text on small screens */
+  .gl-b-cell {
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .gl-hero-col--copy {
+    width: 100%;
+  }
+
+  .gl-hero-col--visual {
+    width: 668px !important;
+    max-width: 668px !important;
+    height: 600px !important;
+    flex-shrink: 0 !important;
+    transform: scale(0.85) !important;
+    transform-origin: top center !important;
+    margin-bottom: -90px !important;
+  }
+
+  /* Fix Root Cause Focused card layout on mobile to match the others */
+  .gl-b-cell__grad-row {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 16px !important;
+  }
+
+  .gl-b-cell__ico-gl {
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 50% !important;
+  }
+}
+
+@media (max-width: 670px) {
+  .gl-hero-col--visual {
+    transform: scale(0.52) !important;
+    margin-bottom: -288px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .gl-hero-section__wrap {
+    padding-top: 32px;
+    row-gap: 32px;
+  }
+
+  .gl-report-gl__preview {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .gl-cta-fin__panel {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .gl-journey-card {
+    padding: 24px;
+  }
+
+  .gl-b-cell {
+    padding: 24px;
+  }
+
+  .gl-trust-banner__cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@keyframes glFloatGentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes glFloatReverse {
+  0%, 100% {
+    transform: translateY(-50%);
+  }
+  50% {
+    transform: translateY(calc(-50% + 12px));
   }
 }

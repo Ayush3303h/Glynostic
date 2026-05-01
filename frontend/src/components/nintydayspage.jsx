@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-
+import { ASSETS } from "../../public/assets/figmaAssets"
 /** Figma MCP — node 256:6150 (refresh via get_design_context if URLs expire) */
 const logo = 'https://www.figma.com/api/mcp/asset/5116c326-1a6b-4e79-bbc1-dedb44bda793'
 const accountIcon = 'https://www.figma.com/api/mcp/asset/d71d00d6-ab7c-4fe1-b4eb-3370ca93bd6e'
@@ -58,7 +58,7 @@ export default function NintydaysPage() {
       <header className="border-b border-solid border-[#f1f5f9] bg-[rgba(255,255,255,0.8)] shadow-[0px_4px_10px_rgba(0,82,204,0.05)] backdrop-blur-[6px]">
         <div className="mx-auto flex w-full max-w-[1280px] items-center justify-between px-6 py-4 lg:px-[86px]">
           <img
-            src={logo}
+            src={ASSETS.navbarLogo}
             alt="Glynostic"
             className="h-8 w-[133px] shrink-0 object-contain object-left"
           />

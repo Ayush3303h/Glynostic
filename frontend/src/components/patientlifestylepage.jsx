@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAssessment } from '../context/AssessmentContext'
 import { useAuth } from '../context/AuthContext'
+import { ASSETS } from '../../public/assets/figmaAssets'
 
 const logo = 'https://www.figma.com/api/mcp/asset/abe52546-340a-43f5-8373-f98c8bf06669'
 const accountIcon = 'https://www.figma.com/api/mcp/asset/2c68d5dd-5f79-4fb2-9124-0c76561d3a94'
@@ -45,13 +46,14 @@ export default function PatientLifestylePage() {
   const lifestyleData = assessmentData.patientLifestyle || {}
 
   const [dietNotes, setDietNotes] = useState(lifestyleData.dietNotes || '')
-  const [exerciseFreq, setExerciseFreq] = useState(lifestyleData.exerciseFreq || '3-4 times/week')
-  const [activities, setActivities] = useState(() => new Set(lifestyleData.activities || ['cardio', 'yoga']))
-  const [sleepHours, setSleepHours] = useState(lifestyleData.sleepHours || '7.5')
-  const [bedtime, setBedtime] = useState(lifestyleData.bedtime || '22:30')
-  const [wakeTime, setWakeTime] = useState(lifestyleData.wakeTime || '06:30')
-  const [stressLevel, setStressLevel] = useState(lifestyleData.stressLevel || 3)
+  const [exerciseFreq, setExerciseFreq] = useState(lifestyleData.exerciseFreq || '')
+  const [activities, setActivities] = useState(() => new Set(lifestyleData.activities || []))
+  const [sleepHours, setSleepHours] = useState(lifestyleData.sleepHours || '')
+  const [bedtime, setBedtime] = useState(lifestyleData.bedtime || '')
+  const [wakeTime, setWakeTime] = useState(lifestyleData.wakeTime || '')
+  const [stressLevel, setStressLevel] = useState(lifestyleData.stressLevel || null)
   const [workBalance, setWorkBalance] = useState(lifestyleData.workBalance || '')
+  const [error, setError] = useState('')
 
   const toggleActivity = (id) => {
     setActivities((prev) => {
@@ -72,6 +74,23 @@ export default function PatientLifestylePage() {
   }
 
   const handleContinue = () => {
+    if (!exerciseFreq) {
+      setError('Please select your exercise frequency.')
+      return
+    }
+    if (!sleepHours) {
+      setError('Please enter your average sleep duration.')
+      return
+    }
+    if (!stressLevel) {
+      setError('Please select your stress level.')
+      return
+    }
+    if (!dietNotes.trim()) {
+      setError('Please describe your diet patterns.')
+      return
+    }
+    setError('')
     updateAssessmentData('patientLifestyle', {
       dietNotes,
       exerciseFreq,
@@ -90,7 +109,7 @@ export default function PatientLifestylePage() {
       <header className="border-b border-[#f1f5f9] bg-[rgba(255,255,255,0.8)] px-4 shadow-[0px_4px_10px_rgba(0,82,204,0.05)] backdrop-blur-[6px] sm:px-8 lg:px-[86px]">
         <div className="mx-auto flex h-[68px] w-full max-w-[1280px] items-center justify-between pl-0 pr-0 sm:pl-2 sm:pr-2">
           <img
-            src={logo}
+            src={ASSETS.navbarLogo}
             alt="Glynostic"
             className="h-8 w-[133px] shrink-0 object-contain object-left"
           />
@@ -297,6 +316,7 @@ export default function PatientLifestylePage() {
             </section>
           </div>
 
+          {error && <p className="mt-4 text-sm text-red-500 font-semibold">{error}</p>}
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <button
               type="button"

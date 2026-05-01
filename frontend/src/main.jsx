@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { ClerkProvider } from '@clerk/clerk-react';
 import { AuthProvider } from "./context/AuthContext";
 
 import App from './App.jsx'
@@ -16,19 +16,15 @@ if (SHOULD_REDIRECT_LOCALHOST) {
   );
 }
 
-const GOOGLE_CLIENT_ID =
-  import.meta.env.VITE_GOOGLE_CLIENT_ID;
-
-if (!GOOGLE_CLIENT_ID) {
-  throw new Error("Missing VITE_GOOGLE_CLIENT_ID in frontend/.env");
-}
+const CLERK_KEY =
+  import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "pk_test_Zmlyc3Qtd29tYmF0LTI3LmNsZXJrLmFjY291bnRzLmRldiQ";
 
 if (!SHOULD_REDIRECT_LOCALHOST) {
   createRoot(document.getElementById('root')).render(
-  <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
-  </GoogleOAuthProvider>
+    <ClerkProvider publishableKey={CLERK_KEY}>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </ClerkProvider>
   )
 }
