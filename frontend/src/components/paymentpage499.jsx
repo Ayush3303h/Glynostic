@@ -169,7 +169,7 @@ export default function PaymentPage499() {
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
           <article className="overflow-hidden rounded-xl border border-[rgba(190,201,196,0.2)] bg-white shadow-[0px_4px_32px_rgba(0,0,0,0.04)] lg:col-span-7">
             <div className="relative h-[240px] w-full overflow-hidden sm:h-[320px] lg:h-[396px]">
-              <img src="../../public/assets/MockUp_1.png" alt="" className="h-full w-full object-cover" />
+              <img src="/assets/MockUp_1.png" alt="" className="h-full w-full object-cover" />
               <span className="absolute left-4 top-3 rounded-full bg-[#003d9b] px-3 py-[3.5px] text-xs font-semibold uppercase tracking-[0.6px] text-white">
                 METABOLIC EXCELLENCE
               </span>
