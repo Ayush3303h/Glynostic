@@ -275,7 +275,7 @@ app.post("/api/payment/create-order", async (req, res) => {
     res.json(order);
   } catch (error) {
     console.error("Error creating Razorpay order:", error);
-    res.status(500).json({ error: "Could not create payment order" });
+    res.status(500).json({ error: "Could not create payment order", details: error });
   }
 });
 

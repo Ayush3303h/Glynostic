@@ -85,7 +85,7 @@ export default function NintydaysPage() {
       }
 
       const options = {
-        key: 'rzp_test_SkBZG3Am6HG8mr',
+        key: 'rzp_live_SkSDyDMEUlw8HU',
         amount: order.amount,
         currency: order.currency,
         name: 'Glynostic',
