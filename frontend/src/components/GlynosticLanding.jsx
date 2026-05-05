@@ -15,6 +15,22 @@ export default function GlynosticLanding() {
   const navigate = useNavigate()
   const [showLoginPrompt, setShowLoginPrompt] = useState(false)
 
+  const [timeLeft, setTimeLeft] = useState(10800); // 3 hours in seconds
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
+
   const PENDING_ANCHOR_KEY = 'gl_pending_anchor'
 
   const scrollToAnchor = (anchorId) => {
@@ -137,15 +153,45 @@ export default function GlynosticLanding() {
                   <span>24x7 Expert Support</span>
                 </li>
               </ul>
-              <a
-                className="gl-btn-gl gl-btn-gl--hero-gr"
-                href="#assessment"
-                onClick={(e) => handleCtaClick(e, 'assessment')}
-              >
-                <span>Start Your Metabolic Risk Assessment</span>
-                <strong>₹499</strong>
-                <Img src={ASSETS.heroCtaArrow} alt="" width={16} height={16} />
-              </a>
+              <div className="mt-6 w-full max-w-[360px] rounded-[16px] border border-[#f1f5f9] bg-white p-5 text-center shadow-[0px_8px_32px_rgba(0,0,0,0.12)]">
+                {/* Offer Ends section */}
+                <div className="flex items-center justify-center gap-1.5 text-[#2f4d8a]">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <span className="text-[13px] font-medium tracking-wide uppercase flex items-center">
+                    Offer ends in 
+                    <span className="ml-1.5 rounded-md bg-[#eff6ff] px-1.5 py-0.5 text-[15px] font-bold text-[#1d4ed8] shadow-sm border border-[#dbeafe]">
+                      {formatTime(timeLeft)}
+                    </span>
+                  </span>
+                </div>
+
+                {/* SAVE 80% text */}
+                <h3 className="mt-3 text-[20px] font-bold text-[#203f9e]">
+                  SAVE 80%
+                </h3>
+
+                {/* The original button */}
+                <div className="mt-4 flex justify-center w-full">
+                  <a
+                    className="gl-btn-gl gl-btn-gl--hero-gr"
+                    href="#assessment"
+                    onClick={(e) => handleCtaClick(e, 'assessment')}
+                    style={{ width: '100%', justifyContent: 'center', margin: 0 }}
+                  >
+                    <span>Start Your Metabolic Risk Assessment</span>
+                    <strong>₹499</strong>
+                    <Img src={ASSETS.heroCtaArrow} alt="" width={16} height={16} />
+                  </a>
+                </div>
+
+                {/* Secure text */}
+                <p className="mt-3 text-[11px] text-[#9ca3af]">
+                  Secure payment processed via encrypted gateway.
+                </p>
+              </div>
             </div>
 
             <div className="gl-hero-col gl-hero-col--visual">
@@ -533,20 +579,40 @@ export default function GlynosticLanding() {
             </div>
             <div className="gl-cta-fin__panel" id="program">
               <div className="gl-cta-fin__accent-blob" aria-hidden />
-              <p className="gl-cta-fin__label">Metabolic Risk Assessment</p>
-              <div className="gl-cta-fin__price-row">
+              
+              {/* Offer Ends section */}
+              <div className="flex items-center justify-center gap-1.5 text-[#2f4d8a] mb-2 mt-2 relative z-10">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span className="text-[13px] font-medium tracking-wide uppercase flex items-center">
+                  Offer ends in 
+                  <span className="ml-1.5 rounded-md bg-[#eff6ff] px-1.5 py-0.5 text-[15px] font-bold text-[#1d4ed8] shadow-sm border border-[#dbeafe]">
+                    {formatTime(timeLeft)}
+                  </span>
+                </span>
+              </div>
+
+              {/* SAVE 80% text */}
+              <h3 className="mb-4 text-[20px] font-bold text-[#203f9e] text-center relative z-10">
+                SAVE 80%
+              </h3>
+
+              <p className="gl-cta-fin__label relative z-10">Metabolic Risk Assessment</p>
+              <div className="gl-cta-fin__price-row relative z-10">
                 <strong>₹499</strong>
                 <del>₹2100</del>
               </div>
               <a
-                className="gl-btn-gl gl-btn-gl--fill-navy-lg"
+                className="gl-btn-gl gl-btn-gl--fill-navy-lg relative z-10"
                 href="#assessment"
                 onClick={(e) => handleCtaClick(e, 'assessment')}
               >
                 Start Assessment Now
                 <Img src={ASSETS.ctaArrow} alt="" width={19} height={9} />
               </a>
-              <div className="gl-cta-fin__footnote">
+              <div className="gl-cta-fin__footnote relative z-10">
                 <Img src={ASSETS.ctaClock} alt="" width={12} height={12} />
                 Takes only 5 mins to complete
               </div>
