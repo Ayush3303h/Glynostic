@@ -3,7 +3,7 @@
 export const ASSETS = {
   navbarLogo:
     '/Logo%20(1).png',
-  headerBell: '',
+  headerBell: '/assets/usericon.svg',
   heroBadgeIcon: '/assets/Icon_6.png',
   featAi: '/assets/Icon_(1).png',
   featRisk: '/assets/Icon_(2).png',

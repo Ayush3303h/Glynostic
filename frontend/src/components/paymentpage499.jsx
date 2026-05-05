@@ -51,6 +51,22 @@ export default function PaymentPage499() {
   const { assessmentData } = useAssessment()
   const navigate = useNavigate()
 
+  const [timeLeft, setTimeLeft] = useState(10800); // 3 hours in seconds
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
+
   useEffect(() => {
     if (!loading && !user) {
       navigate('/')
@@ -240,87 +256,49 @@ export default function PaymentPage499() {
             </div>
           </article>
 
-          <aside className="lg:col-span-5">
-            <div className="rounded-xl border border-[rgba(190,201,196,0.2)] bg-white p-4 shadow-[0px_4px_16px_rgba(0,0,0,0.04)] sm:p-6 lg:p-[33px]">
-              <div className="flex items-center justify-between border-b border-[rgba(190,201,196,0.3)] pb-[17px]">
-                <h3 className="text-xl font-semibold leading-7 text-[#151c27] sm:text-[27px]">Amount Payable</h3>
-                <span className="text-[30px] font-semibold leading-8 text-[#003d9b] sm:text-[36px]">₹499</span>
-              </div>
-
-
-              <div className="py-4">
-                <div className="relative mt-2 overflow-hidden rounded-[28px] border border-white/40 bg-gradient-to-b from-[#f1f3f5] to-[#e4e4e9] p-4 sm:p-6 shadow-[0px_20px_40px_-10px_rgba(0,0,0,0.08),inset_0px_2px_4px_rgba(255,255,255,0.8)]">
-
-                  {/* Top Bar */}
-                  <div className="mb-5 flex items-center gap-3 pl-1">
-                    <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#8a80f8] to-[#6a61eb] shadow-[0px_4px_10px_rgba(91,81,230,0.3)]">
-                      <div className="size-3.5 rounded-full bg-white shadow-inner" />
-                    </div>
-                    <span className="text-lg font-bold tracking-tight text-[#111827]">Pay in full</span>
-                  </div>
-
-                  {/* To section */}
-                  <div className="mb-3 rounded-[22px] border border-white/60 bg-white/70 px-5 py-4 shadow-[0px_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white/90">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[16px] font-medium text-[#6b7280]">To</span>
-                      <div className="flex items-center gap-2">
-                        <div className="size-4 rounded-md bg-[#059669] shadow-[0px_2px_6px_rgba(5,150,105,0.4)]" />
-                        <span className="text-[16px] font-bold text-[#111827]">Glynostic</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* From, Pay on, Fee section */}
-                  <div className="mb-3 space-y-5 rounded-[22px] border border-white/60 bg-white/70 px-5 py-5 shadow-[0px_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white/90">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[16px] font-medium text-[#6b7280]">From</span>
-                      <div className="flex items-center gap-2 text-[16px] font-bold text-[#111827]">
-                        <div className="flex size-[18px] items-center justify-center rounded-md bg-gradient-to-br from-[#f97316] to-[#ea580c] text-[10px] text-white shadow-[0px_2px_6px_rgba(234,88,12,0.4)]">
-                          ✓
-                        </div>
-                        {user?.name || 'Guest User'}
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[16px] font-medium text-[#6b7280]">Pay on</span>
-                      <span className="text-[16px] font-bold text-[#111827]">
-                        {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[16px] font-medium text-[#6b7280]">Fee (0%)</span>
-                      <span className="text-[16px] font-bold text-[#111827]">₹0.00</span>
-                    </div>
-                  </div>
-
-                  {/* Total & Button section */}
-                  <div className="rounded-[22px] border border-white/60 bg-white/70 px-5 py-5 shadow-[0px_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-md">
-                    <div className="flex items-end justify-between pb-6 pl-1 pt-1">
-                      <div className="flex flex-col gap-1">
-                        <span className="text-[16px] font-medium text-[#6b7280]">Total</span>
-                        <span className="text-[36px] font-black tracking-tight text-[#111827] drop-shadow-sm">₹499.00</span>
-                      </div>
-                      <button className="mb-2.5 text-[15px] font-semibold text-[#5b51e6] transition-colors hover:text-[#453abd] hover:underline">See details</button>
-                    </div>
-
-                    <button
-                      onClick={handlePayment}
-                      className="group flex w-full items-center justify-between overflow-hidden rounded-[24px] bg-gradient-to-r from-[#6a61eb] to-[#5b51e6] p-1.5 text-[18px] font-bold text-white shadow-[0px_10px_20px_-5px_rgba(91,81,230,0.5),inset_0px_2px_4px_rgba(255,255,255,0.3)] transition-all hover:scale-[1.02] hover:shadow-[0px_14px_25px_-5px_rgba(91,81,230,0.6)] active:scale-[0.98]">
-                      <div className="relative flex size-[48px] shrink-0 items-center justify-center rounded-full bg-white/20 shadow-inner backdrop-blur-sm transition-transform duration-300 group-hover:translate-x-2">
-                        <span className="text-xl font-light drop-shadow-md">→</span>
-                      </div>
-                      <span className="absolute left-1/2 -translate-x-1/2 tracking-[0.5px] drop-shadow-md">Pay in full</span>
-                      <div className="size-[48px] shrink-0" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-5 flex items-center justify-center gap-2 opacity-60">
-                <span className="text-[10px] font-semibold uppercase tracking-[1px] text-[#57605f]">
-                  POWERED BY Glynostic
+          <aside className="lg:col-span-5 flex flex-col items-center pt-2">
+            {/* The white card */}
+            <div className="w-full rounded-[20px] border border-[#f1f5f9] bg-white p-8 text-center shadow-[0px_8px_32px_rgba(0,0,0,0.04)]">
+              {/* Offer Ends section */}
+              <div className="flex items-center justify-center gap-2 text-[#2f4d8a]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span className="text-[15px] font-medium tracking-wide uppercase flex items-center">
+                  Offer ends in 
+                  <span className="ml-2 rounded-md bg-[#eff6ff] px-2 py-1 text-[18px] font-bold text-[#1d4ed8] shadow-sm border border-[#dbeafe]">
+                    {formatTime(timeLeft)}
+                  </span>
                 </span>
               </div>
+
+              {/* SAVE 80% text */}
+              <h3 className="mt-5 text-[24px] font-bold text-[#203f9e]">
+                SAVE 80%
+              </h3>
+
+              {/* Pay button */}
+              <button 
+                onClick={handlePayment}
+                className="mt-5 flex w-full flex-col items-center justify-center rounded-xl bg-[#203f9e] py-3.5 text-white shadow-md transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <span className="text-[24px] font-bold leading-tight">Pay Now - ₹499</span>
+                <span className="text-[15px] font-medium text-white/70 line-through">₹2,100</span>
+              </button>
+
+              {/* Secure text */}
+              <p className="mt-5 text-[13px] text-[#9ca3af]">
+                Secure payment processed via encrypted gateway.
+              </p>
+            </div>
+
+            {/* Large Shield icon below */}
+            <div className="mt-14 flex justify-center text-[#cfd5de]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <path d="M9 12l2 2 4-4"></path>
+              </svg>
             </div>
           </aside>
         </section>
@@ -362,7 +340,7 @@ export default function PaymentPage499() {
             <p className="text-2xl font-semibold leading-7 text-[#0f172a] sm:text-[28px]">Need Help?</p>
             <div className="mt-2 flex flex-wrap items-center gap-3 text-sm leading-[22.75px] sm:gap-4">
               <a href="#" className="font-semibold text-[#005344]">
-                WhatsApp Us
+              9217596156
               </a>
               <span className="text-[#cbd5e1]">|</span>
               <a href="mailto:support@glynostic.com" className="text-[#64748b]">
@@ -374,9 +352,19 @@ export default function PaymentPage499() {
             <p className="text-xs leading-4 text-[#64748b]">
               © 2024 Glynostic Healthcare. HIPAA Compliant &amp; SOC2 Type II Certified.
             </p>
-            <div className="mt-3 flex gap-4 text-sm text-[#64748b] sm:gap-6 lg:justify-end">
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of Service</a>
+            <div className="mt-3 flex gap-6 text-sm text-[#64748b] lg:justify-end">
+              <a href="#" aria-label="Facebook">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#005344' }}>
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                </svg>
+              </a>
+              <a href="#" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#005344' }}>
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                </svg>
+              </a>
             </div>
           </div>
         </div>

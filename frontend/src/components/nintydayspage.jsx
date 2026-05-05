@@ -1,4 +1,6 @@
 import { useCallback, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import { ASSETS } from "../../public/assets/figmaAssets"
 /** Figma MCP — node 256:6150 (refresh via get_design_context if URLs expire) */
 const logo = 'https://www.figma.com/api/mcp/asset/5116c326-1a6b-4e79-bbc1-dedb44bda793'
@@ -36,11 +38,29 @@ function IconWrap({ src, className, alt = '' }) {
 }
 
 export default function NintydaysPage() {
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
   const [fullName, setFullName] = useState('')
   const [mobile, setMobile] = useState('')
   const [email, setEmail] = useState('')
   const [upiId, setUpiId] = useState('glynostic@upi')
   const [copyLabel, setCopyLabel] = useState('Copy')
+
+  const [timeLeft, setTimeLeft] = useState(10800);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
 
   useEffect(() => {
     const script = document.createElement('script')
@@ -126,13 +146,28 @@ export default function NintydaysPage() {
             className="h-8 w-[133px] shrink-0 object-contain object-left"
           />
           <div className="flex items-center gap-4">
-            <IconWrap src={accountIcon} className="size-5" />
-            <button
-              type="button"
-              className="rounded-full bg-[#003d9b] px-6 py-2 text-sm font-semibold leading-5 text-white"
-            >
-              Get Started
-            </button>
+            {user ? (
+              <>
+                <img src={user.picture} alt="" className="size-8 rounded-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => { logout(); navigate('/'); }}
+                  className="rounded-full bg-[#003d9b] px-6 py-2 text-sm font-semibold leading-5 text-white cursor-pointer hover:bg-[#002d7a] transition-colors"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <IconWrap src={accountIcon} className="size-5" />
+                <button
+                  type="button"
+                  className="rounded-full bg-[#003d9b] px-6 py-2 text-sm font-semibold leading-5 text-white"
+                >
+                  Get Started
+                </button>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -321,75 +356,39 @@ export default function NintydaysPage() {
                 Secure Enrollment
               </h2>
               
-              <div className="relative mt-2 overflow-hidden rounded-[28px] border border-white/40 bg-gradient-to-b from-[#f1f3f5] to-[#e4e4e9] p-4 sm:p-6 shadow-[0px_20px_40px_-10px_rgba(0,0,0,0.08),inset_0px_2px_4px_rgba(255,255,255,0.8)]">
-                
-                {/* Top Bar */}
-                <div className="mb-5 flex items-center justify-between pl-1">
-                  <div className="flex items-center gap-3">
-                    <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#8a80f8] to-[#6a61eb] shadow-[0px_4px_10px_rgba(91,81,230,0.3)]">
-                      <div className="size-3.5 rounded-full bg-white shadow-inner" />
-                    </div>
-                    <span className="text-lg font-bold tracking-tight text-[#111827]">90-Day Program</span>
-                  </div>
-                  <div className="rounded-full bg-[#5b51e6] px-3 py-1.5 text-xs font-semibold text-white shadow-sm">
-                    Best Value
-                  </div>
-                </div>
-
-                {/* To section */}
-                <div className="mb-3 rounded-[22px] border border-white/60 bg-white/70 px-5 py-4 shadow-[0px_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white/90">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[16px] font-medium text-[#6b7280]">To</span>
-                    <div className="flex items-center gap-2">
-                      <div className="size-4 rounded-md bg-[#059669] shadow-[0px_2px_6px_rgba(5,150,105,0.4)]" />
-                      <span className="text-[16px] font-bold text-[#111827]">Glynostic</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* From, Pay on, Fee section */}
-                <div className="mb-3 space-y-5 rounded-[22px] border border-white/60 bg-white/70 px-5 py-5 shadow-[0px_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white/90">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[16px] font-medium text-[#6b7280]">From</span>
-                    <div className="flex items-center gap-2 text-[16px] font-bold text-[#111827]">
-                      <div className="flex size-[18px] items-center justify-center rounded-md bg-gradient-to-br from-[#f97316] to-[#ea580c] text-[10px] text-white shadow-[0px_2px_6px_rgba(234,88,12,0.4)]">
-                        ✓
-                      </div>
-                      {fullName || 'Guest User'}
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-[16px] font-medium text-[#6b7280]">Pay on</span>
-                    <span className="text-[16px] font-bold text-[#111827]">
-                      {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+              <div className="mt-6 w-full rounded-[20px] border border-[#f1f5f9] bg-white p-8 text-center shadow-[0px_8px_32px_rgba(0,0,0,0.04)]">
+                {/* Offer Ends section */}
+                <div className="flex items-center justify-center gap-2 text-[#2f4d8a]">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <span className="text-[15px] font-medium tracking-wide uppercase flex items-center">
+                    Offer ends in 
+                    <span className="ml-2 rounded-md bg-[#eff6ff] px-2 py-1 text-[18px] font-bold text-[#1d4ed8] shadow-sm border border-[#dbeafe]">
+                      {formatTime(timeLeft)}
                     </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-[16px] font-medium text-[#6b7280]">Fee (0%)</span>
-                    <span className="text-[16px] font-bold text-[#111827]">₹0.00</span>
-                  </div>
+                  </span>
                 </div>
 
-                {/* Total & Button section */}
-                <div className="rounded-[22px] border border-white/60 bg-white/70 px-5 py-5 shadow-[0px_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-md">
-                  <div className="flex items-end justify-between pb-6 pl-1 pt-1">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-[16px] font-medium text-[#6b7280]">Total</span>
-                      <span className="text-[36px] font-black tracking-tight text-[#111827] drop-shadow-sm">₹4999.00</span>
-                    </div>
-                    <span className="mb-2.5 text-[15px] font-medium text-[#6b7280]">inc. GST</span>
-                  </div>
+                {/* SAVE 80% text */}
+                <h3 className="mt-5 text-[24px] font-bold text-[#203f9e]">
+                  SAVE 80%
+                </h3>
 
-                  <button
-                    onClick={handlePayment}
-                    className="group flex w-full items-center justify-between overflow-hidden rounded-[24px] bg-gradient-to-r from-[#6a61eb] to-[#5b51e6] p-1.5 text-[18px] font-bold text-white shadow-[0px_10px_20px_-5px_rgba(91,81,230,0.5),inset_0px_2px_4px_rgba(255,255,255,0.3)] transition-all hover:scale-[1.02] hover:shadow-[0px_14px_25px_-5px_rgba(91,81,230,0.6)] active:scale-[0.98]">
-                    <div className="relative flex size-[48px] shrink-0 items-center justify-center rounded-full bg-white/20 shadow-inner backdrop-blur-sm transition-transform duration-300 group-hover:translate-x-2">
-                      <span className="text-xl font-light drop-shadow-md">→</span>
-                    </div>
-                    <span className="absolute left-1/2 -translate-x-1/2 tracking-[0.5px] drop-shadow-md">Enroll Now</span>
-                    <div className="size-[48px] shrink-0" />
-                  </button>
-                </div>
+                {/* Pay button */}
+                <button 
+                  onClick={handlePayment}
+                  className="mt-5 flex w-full flex-col items-center justify-center rounded-xl bg-[#203f9e] py-3.5 text-white shadow-md transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <span className="text-[24px] font-bold leading-tight">Pay Now - ₹4,999</span>
+                  <span className="text-[15px] font-medium text-white/70 line-through">₹25,000</span>
+                </button>
+
+                {/* Secure text */}
+                <p className="mt-5 text-[13px] text-[#9ca3af]">
+                  Secure payment processed via encrypted gateway.
+                </p>
               </div>
 
               <div className="mt-4 flex w-full flex-wrap items-center justify-between gap-6 px-2">
