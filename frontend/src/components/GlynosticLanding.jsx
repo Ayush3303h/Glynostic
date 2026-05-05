@@ -511,7 +511,6 @@ export default function GlynosticLanding() {
                 [ASSETS.trustLock, 'RECOGNISED BY INDIAN GOVERMENT'],
                 [ASSETS.trustLab, 'RECOGNISED BY INDIAN MEDICAL COUNCIL'],
                 [ASSETS.trustShield, 'HIPAA COMPLIANT'],
-                [ASSETS.trustClinical, 'CLINICAL EXCELLENCE'],
               ].map(([src, lbl]) => (
                 <div key={lbl} className="gl-trust-banner__item">
                   <Img src={src} alt="" width={20} height={25} />
@@ -537,7 +536,7 @@ export default function GlynosticLanding() {
               <p className="gl-cta-fin__label">Metabolic Risk Assessment</p>
               <div className="gl-cta-fin__price-row">
                 <strong>₹499</strong>
-                <del>₹3000</del>
+                <del>₹2100</del>
               </div>
               <a
                 className="gl-btn-gl gl-btn-gl--fill-navy-lg"
@@ -563,20 +562,14 @@ export default function GlynosticLanding() {
           <div className="gl-footer-site__brand">
             <p className="gl-footer-site__wordmark">Need Help?</p>
             <p className="gl-footer-site__legal">
-              © 2024 Glynostic Metabolic Systems. All rights reserved. Precision health through clinical data.
+              9217596156 | support@glynostic.com
             </p>
           </div>
           <nav className="gl-footer-site__links" aria-label="Footer links">
             {[
-              ['Privacy Policy', 'privacy-policy'],
-              ['Terms of Service', 'terms'],
-              ['Clinical Standards', 'clinical-standards'],
-              ['Contact Support', 'contact'],
-              ['Affiliates', 'affiliates'],
-            ].map(([label, slug]) => (
-              <a key={slug} href={`#${slug}`}>
-                {label}
-              </a>
+              ['© 2024 Glynostic Healthcare. HIPAA Compliant & SOC2 Type II Certified.'],
+            ].map(([label]) => (
+              <p className='gl-footer-site__legal'>{label}</p>
             ))}
           </nav>
         </div>

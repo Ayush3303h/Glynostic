@@ -45,10 +45,10 @@ export const ASSETS = {
   flowReport: '/assets/flowReport.svg',
   flowProgram: '/assets/flowProgram.svg',
 
-  trustLock: '/assets/Icon (1).png',
-  trustLab: '/assets/Icon (2).png',
-  trustShield: '/assets/Icon (3).png',
-  trustClinical: '/assets/Icon (4).png',
+  trustLock: '/assets/trustlock.svg',
+  trustLab: '/assets/trustlab.svg',
+  trustShield: '/assets/trustshield.svg',
+  trustClinical: '/assets/trustclinical.svg',
 
   ctaArrow: '/assets/ctaarrow.svg',
   ctaClock: '/assets/ctaclock.svg',
