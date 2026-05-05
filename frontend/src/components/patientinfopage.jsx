@@ -34,7 +34,7 @@ export default function PatientInfoPage() {
     email: '',
     dob: '',
   })
-  
+
   const [error, setError] = useState('')
 
   const handleChange = (e) => {
@@ -238,7 +238,7 @@ export default function PatientInfoPage() {
           <p className="text-[32px] font-semibold leading-7 text-[#0f172a]">Need Help?</p>
           <div className="mt-2 flex items-center gap-4 text-sm">
             <a href="#" className="font-semibold text-[#005344]">
-              WhatsApp Us
+              9217596156
             </a>
             <span className="text-[#cbd5e1]">|</span>
             <a href="mailto:support@glynostic.com" className="text-[#64748b]">

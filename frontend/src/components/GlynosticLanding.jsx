@@ -508,8 +508,8 @@ export default function GlynosticLanding() {
             <p className="gl-trust-banner__promise">Your Health, Our Promise</p>
             <div className="gl-trust-banner__cols">
               {[
-                [ASSETS.trustLock, 'BANK-GRADE SECURITY'],
-                [ASSETS.trustLab, 'NABL CERTIFIED LABS'],
+                [ASSETS.trustLock, 'RECOGNISED BY INDIAN GOVERMENT'],
+                [ASSETS.trustLab, 'RECOGNISED BY INDIAN MEDICAL COUNCIL'],
                 [ASSETS.trustShield, 'HIPAA COMPLIANT'],
                 [ASSETS.trustClinical, 'CLINICAL EXCELLENCE'],
               ].map(([src, lbl]) => (
@@ -561,7 +561,7 @@ export default function GlynosticLanding() {
       <footer className="gl-footer-site">
         <div className="gl-inner gl-footer-site__shell">
           <div className="gl-footer-site__brand">
-            <p className="gl-footer-site__wordmark">Glynostic</p>
+            <p className="gl-footer-site__wordmark">Need Help?</p>
             <p className="gl-footer-site__legal">
               © 2024 Glynostic Metabolic Systems. All rights reserved. Precision health through clinical data.
             </p>
