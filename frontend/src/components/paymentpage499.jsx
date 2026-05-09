@@ -12,13 +12,13 @@ const imgGlynosticLogo =
 const imgAccountIcon =
   'https://www.figma.com/api/mcp/asset/0fe90abc-754c-4414-a753-57c3096a0ace'
 const imgCheckIcon =
-  'https://www.figma.com/api/mcp/asset/f9d86229-56d5-4973-99ff-dfa8f45bb7c5'
+  '/assets/imgCheckIcon.svg'
 const imgDetailsIcon =
-  'https://www.figma.com/api/mcp/asset/413979f9-1e99-41f6-bff7-48d541a53d9e'
+  '/assets/imgDetailsIcon.svg'
 const imgDeliveryIcon =
-  'https://www.figma.com/api/mcp/asset/3fd783dd-fcf0-48aa-9b99-23e8dcb63493'
+  '/assets/imgDeliveryIcon.svg'
 const imgSecureIcon =
-  'https://www.figma.com/api/mcp/asset/97139a8a-8d58-4857-9ec0-257e009a4ad9'
+  '/assets/imgSecureIcon.svg'
 const imgUpiIcon =
   'https://www.figma.com/api/mcp/asset/dc09521c-9c3b-4b81-a958-bb38d73d0137'
 const imgCardIcon =
@@ -26,11 +26,11 @@ const imgCardIcon =
 const imgArrowIcon =
   'https://www.figma.com/api/mcp/asset/8027da2f-bddb-404a-bcd7-e6805c662aa0'
 const imgTrustSecure =
-  'https://www.figma.com/api/mcp/asset/423315c7-9b37-428b-8919-7ffdc62c5874'
+  '/assets/imgUpiIcon.svg'
 const imgTrustClinical =
-  'https://www.figma.com/api/mcp/asset/d7700897-4792-4c16-b015-6e51ed96d71a'
+  '/assets/imgTrustClinical.svg'
 const imgTrustRefund =
-  'https://www.figma.com/api/mcp/asset/a8b2822e-2519-431f-9696-07d5ee3232d9'
+  '/assets/imgTrustRefund.svg'
 
 const listItems = [
   'AI-powered analysis of 25+ factors',
@@ -255,7 +255,6 @@ export default function PaymentPage499() {
               </ol>
             </div>
           </article>
-
           <aside className="lg:col-span-5 flex flex-col items-center pt-2">
             {/* The white card */}
             <div className="w-full rounded-[20px] border border-[#f1f5f9] bg-white p-8 text-center shadow-[0px_8px_32px_rgba(0,0,0,0.04)]">

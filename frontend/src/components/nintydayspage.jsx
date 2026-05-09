@@ -6,9 +6,9 @@ import { ASSETS } from "../../public/assets/figmaAssets"
 const logo = 'https://www.figma.com/api/mcp/asset/5116c326-1a6b-4e79-bbc1-dedb44bda793'
 const accountIcon = 'https://www.figma.com/api/mcp/asset/d71d00d6-ab7c-4fe1-b4eb-3370ca93bd6e'
 
-const badgeCheckIcon = 'https://www.figma.com/api/mcp/asset/09fa2185-1727-4c7d-94d3-dda7036447ac'
-const heroAvatar1 = 'https://www.figma.com/api/mcp/asset/5656d278-65be-45ac-9573-eb5c3d07c778'
-const heroAvatar2 = 'https://www.figma.com/api/mcp/asset/d58b80c3-7950-46be-86e4-f6b42bb00ae1'
+const badgeCheckIcon = '/assets/badgeCheckIcon1.svg'
+const heroAvatar1 = '/assets/heroAvatar1.svg'
+const heroAvatar2 = '/assets/heroAvatar2.svg'
 const heroImage = 'https://www.figma.com/api/mcp/asset/b062178a-8c0b-4fc5-9c23-8a9a43474089'
 
 const guideCardIcon = 'https://www.figma.com/api/mcp/asset/f6b33a73-f48e-4d2f-bbaa-548132823ac0'

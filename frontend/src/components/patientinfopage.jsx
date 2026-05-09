@@ -6,22 +6,21 @@ import { ASSETS } from '../../public/assets/figmaAssets'
 
 const logo = 'https://www.figma.com/api/mcp/asset/18ff29d9-6ac5-4966-a428-4f1b9e067772'
 const accountIcon = 'https://www.figma.com/api/mcp/asset/a368c798-2fbb-4508-b447-9bb81fdf13e1'
-const patientStepIcon = 'https://www.figma.com/api/mcp/asset/c4ba1d41-238b-4330-95f7-c3dd23bbf341'
-const activeStepIcon = 'https://www.figma.com/api/mcp/asset/b6614b12-ae1e-4463-85ae-e6bc0a6561c5'
-const historyIcon = 'https://www.figma.com/api/mcp/asset/2299ebbd-8886-4737-9b8f-c0f7f6a15581'
-const lifestyleIcon = 'https://www.figma.com/api/mcp/asset/33ab838d-5c6f-4666-b1d4-ae8ef96741f2'
-const biometricsIcon = 'https://www.figma.com/api/mcp/asset/61d4ade8-5754-4658-96d6-18ea2187c4b5'
-const summaryIcon = 'https://www.figma.com/api/mcp/asset/30f81a98-d691-4c1a-8a37-06245059a245'
-const completeIcon = 'https://www.figma.com/api/mcp/asset/82248687-6c94-463e-8b4c-531d90e2b7ff'
-const detailsIconBg = 'https://www.figma.com/api/mcp/asset/5761b486-f8a0-4538-83d7-2c41f5b46cb6'
-const trustA = 'https://www.figma.com/api/mcp/asset/8a96cf76-c023-4789-aaef-a0cbebc15e54'
-const trustB = 'https://www.figma.com/api/mcp/asset/b225248a-e190-4380-aba5-a9e12099a0cc'
-const trustC = 'https://www.figma.com/api/mcp/asset/ab92d0e5-bdac-415e-95f5-eeaf7b7ab99e'
-const continueArrow = 'https://www.figma.com/api/mcp/asset/55342619-7c9f-43cb-bc00-b59acc616814'
+const activeStepIcon = '/assets/pactiveStepIcon.svg'
+const historyIcon = '/assets/historyIcon.svg'
+const lifestyleIcon = '/assets/lifestyleIcon.svg'
+const biometricsIcon = '/assets/biometricsIcon.svg'
+const summaryIcon = '/assets/summaryIcon.svg'
+const completeIcon = '/assets/ompleteIcon.svg'
+const detailsIconBg = '/assets/detailsIconBg1.svg'
+const trustA = '/assets/trustA.svg'
+const trustB = '/assets/trustB.svg'
+const trustC = '/assets/trustC.svg'
+const continueArrow = '/assets/ctaarrow.svg'
 
-const footerA = 'https://www.figma.com/api/mcp/asset/bdf66343-ed12-4f56-9a46-2751b6467b54'
-const footerB = 'https://www.figma.com/api/mcp/asset/100090cc-e01f-4246-b12a-4af05554926c'
-const footerC = 'https://www.figma.com/api/mcp/asset/c7a4dd8e-c78f-49cc-938f-78793b677a72'
+const footerA = '/assets/footerA.svg'
+const footerB = '/assets/footerB.svg'
+const footerC = '/assets/footerC.svg'
 
 export default function PatientInfoPage() {
   const { assessmentData, updateAssessmentData } = useAssessment()
@@ -201,8 +200,8 @@ export default function PatientInfoPage() {
 
             <div>
               <div className="flex items-center gap-4 border-r-4 border-[#96ebd5] bg-[#e6f0ee] px-6 py-4">
-                <div className="h-[10.5px] w-[11.34px] overflow-hidden">
-                  <img src={patientStepIcon} alt="" className="h-full w-full" />
+                <div className="text-sm text-[#94a3b8]">
+                  <p>01</p>
                 </div>
                 <span className="text-base font-semibold text-[#003d9b]">Patient Info</span>
                 <div className="ml-auto size-[9.333px] overflow-hidden">

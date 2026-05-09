@@ -6,22 +6,22 @@ import { ASSETS } from '../../public/assets/figmaAssets'
 
 const logo = 'https://www.figma.com/api/mcp/asset/abe52546-340a-43f5-8373-f98c8bf06669'
 const accountIcon = 'https://www.figma.com/api/mcp/asset/2c68d5dd-5f79-4fb2-9124-0c76561d3a94'
-const stepDone = 'https://www.figma.com/api/mcp/asset/e7a476b1-f30c-4fc6-baaa-bd0ebc41bf01'
-const historyIcon = 'https://www.figma.com/api/mcp/asset/51431229-b552-430f-a462-e34f2e6ee10e'
-const lifestyleIcon = 'https://www.figma.com/api/mcp/asset/7047d5b2-f67b-4e1e-9c70-d8016f45d6d9'
-const biometricsIcon = 'https://www.figma.com/api/mcp/asset/4d7c8666-6d53-4f43-980e-6e60a6d059de'
-const summaryIcon = 'https://www.figma.com/api/mcp/asset/42fcb679-bde9-49cc-8b52-d9425a3b10b6'
-const completeBadge = 'https://www.figma.com/api/mcp/asset/2cfd9f24-e8ca-4d2a-b2a4-3487094e9ebe'
+const stepDone = '/assets/pactiveStepIcon.svg'
+const historyIcon = '/assets/historyIcon.svg'
+const lifestyleIcon = '/assets/lifestyleIcon.svg'
+const biometricsIcon = '/assets/biometricsIcon.svg'
+const summaryIcon = '/assets/summaryIcon.svg'
+const completeBadge = '/assets/ompleteIcon.svg'
 
-const dietIcon = 'https://www.figma.com/api/mcp/asset/11cb7742-33db-465b-b476-fc3a4a56ce6e'
-const dumbbellIcon = 'https://www.figma.com/api/mcp/asset/fa607e7b-6922-4cc5-a2aa-4392cfb5a7dd'
-const checkSvg = 'https://www.figma.com/api/mcp/asset/3a467241-c767-4450-b905-5e861e80ea66'
-const moonIcon = 'https://www.figma.com/api/mcp/asset/c1a55471-00a3-41f3-b3ec-f5676b9f8455'
-const briefcaseIcon = 'https://www.figma.com/api/mcp/asset/108837ce-ada3-48ec-8e04-d51209af8f7b'
-const stressIcon = 'https://www.figma.com/api/mcp/asset/b2f6678a-f99d-4e0a-ac40-f3d8bcf7becb'
-const infoIcon = 'https://www.figma.com/api/mcp/asset/6140e156-6a54-4076-be47-48abf1da91d3'
-const backArrow = 'https://www.figma.com/api/mcp/asset/a02e03c3-6406-40fe-8930-daa7f43a69c8'
-const continueArrow = 'https://www.figma.com/api/mcp/asset/6f33fd0a-4bd0-4ed9-8b33-932293188a8a'
+const dietIcon = '/assets/dietIcon.svg'
+const dumbbellIcon = '/assets/dumbbellIcon.svg'
+const checkSvg = '/assets/checkSvg1.svg'
+const moonIcon = '/assets/moonIcon.svg'
+const briefcaseIcon = '/assets/briefcaseIcon1.svg'
+const stressIcon = '/assets/stressIcon.svg'
+const infoIcon = '/assets/infoIcon.svg'
+const backArrow = '/assets/backArrow.svg'
+const continueArrow = '/assets/ctaarrow.svg'
 
 const exerciseOptions = ['Never', '1-2 times/week', '3-4 times/week', 'Daily']
 const activityTypes = [
@@ -355,7 +355,8 @@ export default function PatientLifestylePage() {
                 <IconWrap src={historyIcon} className="ml-auto size-[10px]" />
               </div>
               <div className="flex items-center gap-4 border-r-4 border-[#96ebd5] bg-[#e6f0ee] py-4 pl-6 pr-7">
-                <span className="inline-block h-[10.5px] w-[11.34px] shrink-0" aria-hidden />
+              <span className="text-sm text-[#94a3b8]">03</span>
+         
                 <span className="text-base font-semibold text-[#003d9b]">Lifestyle</span>
                 <IconWrap src={lifestyleIcon} className="ml-auto h-[11px] w-[9px]" />
               </div>

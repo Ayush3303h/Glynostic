@@ -8,19 +8,20 @@ import { ASSETS } from '../../public/assets/figmaAssets'
 const logo = 'https://www.figma.com/api/mcp/asset/33b53192-99d5-4b16-9d68-0a04a8f3482f'
 const accountIcon = 'https://www.figma.com/api/mcp/asset/85dd3131-a37c-4f27-8d0b-de4e6d5605e6'
 
-const stepDone = 'https://www.figma.com/api/mcp/asset/7d61e838-6eca-43b0-8294-7d3b7fba75b7'
-const historyIcon = 'https://www.figma.com/api/mcp/asset/ac0a644d-34e1-42b4-a5e6-b361bc8b1a03'
-const lifestyleIcon = 'https://www.figma.com/api/mcp/asset/208ca90f-bdd0-45f3-820d-c939f21a793d'
-const biometricsIcon = 'https://www.figma.com/api/mcp/asset/97e1fe90-5a17-451d-b7d4-b43ff1263405'
-const summaryIcon = 'https://www.figma.com/api/mcp/asset/c0ded46c-addc-4403-84ff-ae9d63a1eb3e'
-const completeBadge = 'https://www.figma.com/api/mcp/asset/5be220b2-de61-4eba-b5a9-d4d55a3d40e3'
+const stepDone = '/assets/pactiveStepIcon.svg'
+const historyIcon = '/assets/historyIcon.svg'
+const lifestyleIcon = '/assets/lifestyleIcon.svg'
+const biometricsIcon = '/assets/biometricsIcon.svg'
+const summaryIcon = '/assets/summaryIcon.svg'
+const completeBadge = '/assets/ompleteIcon.svg'
 
-const coreMeasurementsIcon = 'https://www.figma.com/api/mcp/asset/1b1711cf-cfb9-4473-bbe3-e24646756e1e'
-const infoIcon = 'https://www.figma.com/api/mcp/asset/aa3b5105-805d-498a-b702-a82910cea76a'
-const gaugeDecor = 'https://www.figma.com/api/mcp/asset/05c183d8-a777-4b1a-b0f2-98debf5ef2fc'
-const gaugeCalcIcon = 'https://www.figma.com/api/mcp/asset/3a67b2fc-63d7-4947-9d8c-e42aa372717e'
-const gaugeRingSvg = 'https://www.figma.com/api/mcp/asset/448abb1e-8156-461c-9feb-5a805441a105'
-const continueArrow = 'https://www.figma.com/api/mcp/asset/b919a3f3-5854-4fc9-ad34-0a79607a8f2a'
+const coreMeasurementsIcon = '/assets/coreMeasurementsIcon.svg'
+const infoIcon = '/assets/infoIcon.svg'
+const gaugeDecor = '/assets/gaugeDecor1.svg'
+const gaugeCalcIcon = '/assets/gaugeCalcIcon.svg'
+const gaugeRingSvg = '/assets/gaugeRingSvg1.svg'
+const continueArrow = '/assets/ctaarrow.svg'
+
 
 /** Matches design BMI when only weight is known (72.4 kg @ 173 cm ≈ 24.2). */
 const DEFAULT_HEIGHT_CM = 173
@@ -224,7 +225,7 @@ export default function PatientBiometricsPage() {
               {/* BMI — spans 5/12; ≈407px column width inside 976px usable (1000 − gaps) */}
               <section className="relative flex min-h-[603px] h-full xl:col-span-5">
                 <div className="relative flex h-full min-h-[603px] w-full flex-col justify-between overflow-hidden rounded-[12px] bg-[#003d9b] p-8 shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1),0px_8px_10px_-6px_rgba(0,0,0,0.1)]">
-                  <div className="pointer-events-none absolute -right-[49.65px] -top-[50px] h-[133.333px] w-[166.667px] opacity-90">
+                  <div className="pointer-events-none absolute -right-[1.65px] -top-[20px] h-[107.333px] w-[90.667px] opacity-90">
                     <IconWrap src={gaugeDecor} className="h-full w-full" />
                   </div>
 
