@@ -179,10 +179,13 @@ export default function GlynosticLanding() {
                     className="gl-btn-gl gl-btn-gl--hero-gr"
                     href="#assessment"
                     onClick={(e) => handleCtaClick(e, 'assessment')}
-                    style={{ width: '100%', justifyContent: 'center', margin: 0 }}
+                    style={{ width: '100%', justifyContent: 'center', margin: 0, gap: '10px' }}
                   >
                     <span>Start Your Metabolic Risk Assessment</span>
-                    <strong>₹499</strong>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <del style={{ opacity: 0.7, fontSize: '15px' }}>₹2100</del>
+                      <strong>₹499</strong>
+                    </div>
                     <Img src={ASSETS.heroCtaArrow} alt="" width={16} height={16} />
                   </a>
                 </div>
@@ -195,62 +198,13 @@ export default function GlynosticLanding() {
             </div>
 
             <div className="gl-hero-col gl-hero-col--visual">
-              <div className="gl-hero-top-chip gl-hero-top-chip--insulin">
-                <p className="gl-hero-top-chip__kicker">Insulin Resistance</p>
-                <p className="gl-hero-top-chip__value">High</p>
-                <p className="gl-hero-top-chip__sub">Needs Attention</p>
-              </div>
-              <div className="gl-hero-top-chip gl-hero-top-chip--age">
-                <p className="gl-hero-top-chip__kicker">Metabolic Age</p>
-                <p className="gl-hero-top-chip__value gl-hero-top-chip__value--orange">42</p>
-                <p className="gl-hero-top-chip__sub">(Actual: 31)</p>
-              </div>
-              <div className="gl-hero-vis__accent-slot" aria-hidden>
-                <div className="gl-hero-vis__accent" />
-              </div>
-              <div className="gl-hero-vis__photo">
-                <Img
-                  src={ASSETS.professionalHealthyMan}
-                  alt="Healthcare professional"
-                  className="gl-hero-vis__photo-img"
-                  width={520}
-                  height={480}
-                />
-              </div>
-              <div className="gl-hero-vis__floater gl-hero-vis__floater--panel">
-                <div className="gl-hero-vis__score-badge">
-                  <Img src={ASSETS.scoreRingVector} alt="" className="gl-hero-vis__score-ring-img" width={44} height={44} />
-                  <div className="gl-hero-vis__score-ring-inner">
-                    <span className="gl-hero-vis__score-num">72</span>
-                    <span className="gl-hero-vis__score-word">good</span>
-                  </div>
-                </div>
-                <span className="gl-hero-vis__floater-caption">Metabolic Score</span>
-                <div className="gl-hero-vis__mini-rows">
-                  <div className="gl-hero-vis__mini-row">
-                    <Img src={ASSETS.metabolicCardCheck} alt="" width={12} height={12} />
-                    <span>Root Cause Analysis</span>
-                  </div>
-                  <div className="gl-hero-vis__mini-row">
-                    <Img src={ASSETS.metabolicCardCheck} alt="" width={12} height={12} />
-                    <span>Personalized Plan</span>
-                  </div>
-                  <div className="gl-hero-vis__mini-row">
-                    <Img src={ASSETS.metabolicCardCheck} alt="" width={12} height={12} />
-                    <span>Action Roadmap</span>
-                  </div>
-                </div>
-              </div>
-              <div className="gl-hero-vis__risk-stack">
-                <div className="gl-hero-pill-chip">
-                  <span className="gl-hero-pill-chip__dot gl-hero-pill-chip__dot--amber" aria-hidden />
-                  <span>Diabetes Risk: Moderate</span>
-                </div>
-                <div className="gl-hero-pill-chip">
-                  <span className="gl-hero-pill-chip__dot gl-hero-pill-chip__dot--green" aria-hidden />
-                  <span>Fatty Liver Risk: Low</span>
-                </div>
-              </div>
+              <Img
+                src="/assets/post .png"
+                alt="Glynostic Hero"
+                className="gl-hero-vis__review-card"
+                width={520}
+                height={480}
+              />
             </div>
           </div>
         </section>
