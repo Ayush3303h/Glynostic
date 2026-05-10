@@ -161,7 +161,7 @@ export default function GlynosticLanding() {
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
                   <span className="text-[13px] font-medium tracking-wide uppercase flex items-center">
-                    Offer ends in 
+                    Offer ends in
                     <span className="ml-1.5 rounded-md bg-[#eff6ff] px-1.5 py-0.5 text-[15px] font-bold text-[#1d4ed8] shadow-sm border border-[#dbeafe]">
                       {formatTime(timeLeft)}
                     </span>
@@ -452,6 +452,72 @@ export default function GlynosticLanding() {
           </div>
         </section>
 
+        {/* Doctors Section */}
+        <section className="bg-[#003d9b] py-16 w-full">
+          <div className="gl-inner">
+            <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/20 justify-center max-w-5xl mx-auto">
+
+              {/* Doctor 1 */}
+              <div className="flex flex-col px-4 md:px-8 items-center md:items-start text-center md:text-left py-6 md:py-0">
+                <div className="w-[180px] h-[180px] md:w-[200px] md:h-[200px] bg-[#dcece0] flex-shrink-0">
+                  <Img src="/assets/doctor1.png" alt="Dr Neeta Deshpande" className="w-full h-full object-cover" />
+                </div>
+                <h3 className="text-white font-semibold text-[15px] mt-4">Dr Neeta Deshpande</h3>
+                <p className="text-white/80 text-[11px] leading-[1.4] mt-1 max-w-[200px]">
+                  Cert Obesity (USA) MD, FRCP<br />(Edin), PD Endo ABSP
+                </p>
+                <div className="flex items-center gap-1.5 text-white text-[11px] mt-3">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
+                    <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4" />
+                    <circle cx="20" cy="10" r="2" />
+                  </svg>
+                  <span>30 years of experience</span>
+                </div>
+              </div>
+
+              {/* Doctor 2 */}
+              <div className="flex flex-col px-4 md:px-8 items-center md:items-start text-center md:text-left py-6 md:py-0">
+                <div className="w-[180px] h-[180px] md:w-[200px] md:h-[200px] bg-[#dcece0] flex-shrink-0">
+                  <Img src="/assets/doctor2.png" alt="Dr Divya Saxena" className="w-full h-full object-cover" />
+                </div>
+                <h3 className="text-white font-semibold text-[15px] mt-4">Dr Divya Saxena</h3>
+                <p className="text-white/80 text-[11px] leading-[1.4] mt-1 max-w-[200px]">
+                  Endocrinology MBBS, MD, DM
+                </p>
+                <div className="flex items-center gap-1.5 text-white text-[11px] mt-3">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
+                    <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4" />
+                    <circle cx="20" cy="10" r="2" />
+                  </svg>
+                  <span>26 years of experience</span>
+                </div>
+              </div>
+
+              {/* Doctor 3 */}
+              <div className="flex flex-col px-4 md:px-8 items-center md:items-start text-center md:text-left py-6 md:py-0">
+                <div className="w-[180px] h-[180px] md:w-[200px] md:h-[200px] bg-[#dcece0] flex-shrink-0">
+                  <Img src="/assets/Gemini_Generated_Image_t0orl1t0orl1t0or 1.png" alt="Dr Madhur Maheshwari" className="w-full h-full object-cover" />
+                </div>
+                <h3 className="text-white font-semibold text-[15px] mt-4">Dr Madhur Maheshwari</h3>
+                <p className="text-white/80 text-[11px] leading-[1.4] mt-1 max-w-[200px]">
+                  Endocrinology MBBS, MD, DM
+                </p>
+                <div className="flex items-center gap-1.5 text-white text-[11px] mt-3">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
+                    <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4" />
+                    <circle cx="20" cy="10" r="2" />
+                  </svg>
+                  <span>12 years of experience</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
         {/* How it works — node 187:1060: gap 80px title ↔ steps */}
         <section className="gl-slice gl-slice--white gl-how">
           <div className="gl-inner">
@@ -533,7 +599,7 @@ export default function GlynosticLanding() {
             </div>
             <div className="gl-cta-fin__panel" id="program">
               <div className="gl-cta-fin__accent-blob" aria-hidden />
-              
+
               {/* Offer Ends section */}
               <div className="flex items-center justify-center gap-1.5 text-[#2f4d8a] mb-2 mt-2 relative z-10">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -541,7 +607,7 @@ export default function GlynosticLanding() {
                   <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
                 <span className="text-[13px] font-medium tracking-wide uppercase flex items-center">
-                  Offer ends in 
+                  Offer ends in
                   <span className="ml-1.5 rounded-md bg-[#eff6ff] px-1.5 py-0.5 text-[15px] font-bold text-[#1d4ed8] shadow-sm border border-[#dbeafe]">
                     {formatTime(timeLeft)}
                   </span>
