@@ -460,7 +460,7 @@ export default function GlynosticLanding() {
               {/* Doctor 1 */}
               <div className="flex flex-col px-4 md:px-8 items-center md:items-start text-center md:text-left py-6 md:py-0">
                 <div className="w-[180px] h-[180px] md:w-[200px] md:h-[200px] bg-[#dcece0] flex-shrink-0">
-                  <Img src="/assets/doctor1.png" alt="Dr Neeta Deshpande" className="w-full h-full object-cover" />
+                  <Img src="/assets/Gemini_Generated_Image_z4htlvz4htlvz4ht 1.png" alt="Dr Neeta Deshpande" className="w-full h-full object-cover" />
                 </div>
                 <h3 className="text-white font-semibold text-[15px] mt-4">Dr Neeta Deshpande</h3>
                 <p className="text-white/80 text-[11px] leading-[1.4] mt-1 max-w-[200px]">
@@ -472,14 +472,14 @@ export default function GlynosticLanding() {
                     <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4" />
                     <circle cx="20" cy="10" r="2" />
                   </svg>
-                  <span>30 years of experience</span>
+                  <span>6 years of experience</span>
                 </div>
               </div>
 
               {/* Doctor 2 */}
               <div className="flex flex-col px-4 md:px-8 items-center md:items-start text-center md:text-left py-6 md:py-0">
                 <div className="w-[180px] h-[180px] md:w-[200px] md:h-[200px] bg-[#dcece0] flex-shrink-0">
-                  <Img src="/assets/doctor2.png" alt="Dr Divya Saxena" className="w-full h-full object-cover" />
+                  <Img src="/assets/Gemini_Generated_Image_mu4ow4mu4ow4mu4o 1.png" alt="Dr Divya Saxena" className="w-full h-full object-cover" />
                 </div>
                 <h3 className="text-white font-semibold text-[15px] mt-4">Dr Divya Saxena</h3>
                 <p className="text-white/80 text-[11px] leading-[1.4] mt-1 max-w-[200px]">
@@ -498,7 +498,7 @@ export default function GlynosticLanding() {
               {/* Doctor 3 */}
               <div className="flex flex-col px-4 md:px-8 items-center md:items-start text-center md:text-left py-6 md:py-0">
                 <div className="w-[180px] h-[180px] md:w-[200px] md:h-[200px] bg-[#dcece0] flex-shrink-0">
-                  <Img src="/assets/Gemini_Generated_Image_t0orl1t0orl1t0or 1.png" alt="Dr Madhur Maheshwari" className="w-full h-full object-cover" />
+                  <Img src="/assets/Ramadan in UAE_ When should children start fasting_ 1.png" alt="Dr Madhur Maheshwari" className="w-full h-full object-cover" />
                 </div>
                 <h3 className="text-white font-semibold text-[15px] mt-4">Dr Madhur Maheshwari</h3>
                 <p className="text-white/80 text-[11px] leading-[1.4] mt-1 max-w-[200px]">
@@ -510,7 +510,7 @@ export default function GlynosticLanding() {
                     <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4" />
                     <circle cx="20" cy="10" r="2" />
                   </svg>
-                  <span>12 years of experience</span>
+                  <span>8 years of experience</span>
                 </div>
               </div>
 
